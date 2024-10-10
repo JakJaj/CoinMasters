@@ -269,5 +269,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+application.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/java,react,windows,macos,linux,intellij,visualstudiocode,homebrew,maven
