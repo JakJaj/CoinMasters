@@ -1,11 +1,15 @@
-
-import LoginForm from "./LoginForm/LoginForm";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginForm from './LoginForm/LoginForm';
+import RegisterForm from './RegisterForm/RegisterForm';
 
 function App() {
   return (
-    <div>
-      <LoginForm />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+      </Routes>
+    </Router>
   );
 }
 

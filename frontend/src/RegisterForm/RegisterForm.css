@@ -31,22 +31,6 @@
     transform: translateY(-50%);
 }
 
-.wrapper .remember-forgot {
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.remember-forgot a {
-    text-decoration: none;
-    color: #000000;
-}
-
-.remember-forgot a:hover {
-    text-decoration: underline;
-}
-
 .wrapper button {
     margin-top: 20px;
     width: 100%;
@@ -61,16 +45,16 @@
     cursor: pointer;
 }
 
-.wrapper .register-link {
+.wrapper .login-link {
     margin: 20px 0;
     text-align: center;
 }
 
-.register-link p a {
+.login-link p a {
     text-decoration: none;
     color: #000000;
 }
 
-.register-link p a:hover {
+.login-link p a:hover {
     text-decoration: underline;
 }

@@ -1,13 +1,13 @@
 import React from 'react';
-import './LoginForm.css';
+import './RegisterForm.css';
 import { FaUserCircle, FaLock } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
     return (
         <div className='wrapper'>
             <form action=''>
-                <h1>Login</h1>
+                <h1>Register</h1>
                 <div className='input-box'>
                     <input type="text" placeholder='Username' required />
                     <FaUserCircle className='icon' />
@@ -16,20 +16,19 @@ export const LoginForm = () => {
                     <input type="password" placeholder='Password' required />
                     <FaLock className='icon' />
                 </div>
-
-                <div className="remember-forgot">
-                    <label><input type="checkbox" /> Remember me</label>
-                    <a href="#">Forgot Password?</a>
+                <div className='input-box'>
+                    <input type="password" placeholder='Confirm Password' required />
+                    <FaLock className='icon' />
                 </div>
 
-                <button type='submit'>Login</button>
+                <button type='submit'>Register</button>
 
-                <div className="register-link">
-                    <p>Don't have an account? <Link to="/register">Register here!</Link></p>
+                <div className="login-link">
+                    <p>Already have an account? <Link to="/">Login here!</Link></p>
                 </div>
             </form>
         </div>
     )
 }
 
-export default LoginForm;
+export default RegisterForm;
