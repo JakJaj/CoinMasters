@@ -24,7 +24,7 @@ export const RegisterForm = () => {
                 <button className='button' type='submit'>Register</button>
 
                 <div className="login-link">
-                    <p>Already have an account? <Link to="/">Login here!</Link></p>
+                    <p>Already have an account? <Link to="/login">Login here!</Link></p>
                 </div>
             </form>
         </div>
