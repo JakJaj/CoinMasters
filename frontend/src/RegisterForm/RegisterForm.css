@@ -44,3 +44,14 @@
 .login-link p a:hover {
     text-decoration: underline;
 }
+
+.error-messages {
+    color: red;
+    margin-top: 15px;
+    text-align: left;
+    font-size: 12px;
+}
+
+.error {
+    margin: 5px 0;
+}
