@@ -21,7 +21,7 @@ export const RegisterForm = () => {
                     <FaLock className='icon' />
                 </div>
 
-                <button type='submit'>Register</button>
+                <button className='button' type='submit'>Register</button>
 
                 <div className="login-link">
                     <p>Already have an account? <Link to="/">Login here!</Link></p>
