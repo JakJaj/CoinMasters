@@ -1,8 +1,11 @@
 package com.coinmasters.entity;
 
 
+import com.coinmasters.entity.UserGroup.UserGroup;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -29,6 +32,9 @@ public class User {
 
     @Column(name = "mail")
     private String mail;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserGroup> userGroups;
 
     public User(String name, String password, String passwordSalt, String mail){
         this.name = name;

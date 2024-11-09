@@ -1,10 +1,13 @@
 package com.coinmasters.entity;
 
+import com.coinmasters.entity.UserGroup.UserGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "group")
@@ -32,6 +35,9 @@ public class Group {
     @ManyToOne
     @JoinColumn(name = "admin_user_id")
     private User adminUserId;
+
+    @OneToMany(mappedBy = "group")
+    private Set<UserGroup> userGroups;
 
     public Group(String goal, String currency, String joinCode, User adminUserId){
         this.goal = goal;
