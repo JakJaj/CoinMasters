@@ -12,7 +12,7 @@ CREATE TABLE users (
 );
 
 -- Tabela groups
-CREATE TABLE groups (
+CREATE TABLE groupss (
     group_id INT AUTO_INCREMENT PRIMARY KEY,
     group_name VARCHAR(45) NOT NULL,
     goal VARCHAR(45),
@@ -31,7 +31,7 @@ CREATE TABLE transactions (
     user_id INT NOT NULL,
     group_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id)
+    FOREIGN KEY (group_id) REFERENCES groupss(group_id)
 );
 
 -- Tabela pośrednia users_groups
@@ -41,5 +41,5 @@ CREATE TABLE users_groups (
     join_date DATE NOT NULL,
     PRIMARY KEY (user_id, group_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id)
+    FOREIGN KEY (group_id) REFERENCES groupss(group_id)
 );
