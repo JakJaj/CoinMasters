@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "users_groups")
 public class UserGroup {
 
     @EmbeddedId

@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "group")
+@Table(name = "groupss")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,6 +22,9 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
     private Long groupId;
+
+    @Column(name = "group_name")
+    private String groupName;
 
     @Column(name = "goal")
     private String goal;
