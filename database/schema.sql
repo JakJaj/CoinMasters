@@ -2,10 +2,11 @@
 CREATE DATABASE IF NOT EXISTS budget_manager;
 USE budget_manager;
 
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS groupss;
-DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS users_groups;
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS groupss;
+DROP TABLE IF EXISTS users;
+
 
 -- Tabela users
 CREATE TABLE users (
