@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private Set<UserGroup> userGroups;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role rolee;
 
     public User(String name, String password, String passwordSalt, String email){
         this.name = name;
@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(rolee.name()));
     }
 
     @Override

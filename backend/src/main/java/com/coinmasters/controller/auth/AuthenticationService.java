@@ -26,7 +26,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(salt + request.getPassword() ))
                 .passwordSalt(salt)
-                .role(Role.USER)
+                .rolee(Role.USER)
                 .build();
 
         repository.save(user);
