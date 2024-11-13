@@ -53,7 +53,7 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).before(new Date()); //TODO: Hanle jwt expired exception
     }
 
     private Date extractExpiration(String token) {
