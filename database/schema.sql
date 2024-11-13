@@ -9,6 +9,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     password_salt VARCHAR(255) NOT NULL,
     mail VARCHAR(45) UNIQUE NOT NULL
+    rolee VARCHAR(45) NOT NULL
 );
 
 -- Tabela groups
