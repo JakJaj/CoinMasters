@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class JwtService {
 
     @Value("${secret.key.jwt}")
-    private static String SIGN_IN_KEY;
+    private String SIGN_IN_KEY;
     public  String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -46,7 +46,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSignInKey(), SignatureAlgorithm.ES512)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -68,7 +68,7 @@ public class JwtService {
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 
