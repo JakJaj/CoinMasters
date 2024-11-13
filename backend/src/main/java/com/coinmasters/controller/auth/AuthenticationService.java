@@ -4,6 +4,7 @@ import com.coinmasters.config.JwtService;
 import com.coinmasters.dao.UserRepository;
 import com.coinmasters.entity.Role;
 import com.coinmasters.entity.User;
+import com.coinmasters.exceptions.NoSuchUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,20 +37,22 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws NoSuchUserException {
 
-        var user = repository.findByEmail(request.getEmail()).orElseThrow(); //TODO: CUSTOM EXCEPTION FOR NO USER FOUND
+        var user = repository.findByEmail(request.getEmail());
+        if (user.isEmpty()) throw new NoSuchUserException("No user with a specified credentials");
+
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
-                        user.getPasswordSalt() + request.getPassword()
+                        user.get().getPasswordSalt() + request.getPassword()
                 )
         );
 
 
 
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user.get());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

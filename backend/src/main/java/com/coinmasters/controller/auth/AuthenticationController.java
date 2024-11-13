@@ -1,5 +1,6 @@
 package com.coinmasters.controller.auth;
 
+import com.coinmasters.exceptions.NoSuchUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request){
+    private ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request) throws NoSuchUserException {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
