@@ -1,5 +1,6 @@
 package com.coinmasters.service;
 
+import com.coinmasters.config.JwtService;
 import com.coinmasters.controller.user.GroupInfo;
 import com.coinmasters.controller.user.UserDetailsResponse;
 import com.coinmasters.controller.user.UserGroupsResponse;
@@ -20,9 +21,12 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository repository;
+    private final JwtService jwtService;
 
-    public UserDetailsResponse getUserByUserId(Long id){
-        Optional<User> user = repository.findByUserId(id);
+    public UserDetailsResponse getUserDetails(String token){
+        String email = jwtService.extractUsername(token.substring(7));
+        System.out.println(email);
+        Optional<User> user = repository.findByEmail(email);
         if (user.isPresent()){
             User existingUser = user.get();
             return UserDetailsResponse.builder()
@@ -32,11 +36,12 @@ public class UserService {
                     .rolee(existingUser.getRolee().toString())
                     .build();
         }
-        throw new NoSuchUserException(String.format("No user with id - %d", id));
+        throw new NoSuchUserException("This should never happen. If it did then, like, damn...");
     }
 
-    public UserGroupsResponse getGroupsOfUser(Long id){
-        return repository.findByUserId(id)
+    public UserGroupsResponse getGroupsOfUser(String token){
+        String email = jwtService.extractUsername(token.substring(7));
+        return repository.findByEmail(email)
                 .map(existingUser -> UserGroupsResponse.builder()
                         .userGroups(existingUser.getUserGroups().stream()
                                 .map(group -> GroupInfo.builder()
@@ -45,6 +50,6 @@ public class UserService {
                                         .build())
                                 .collect(Collectors.toSet()))
                         .build())
-                .orElseThrow(() -> new NoSuchUserException(String.format("No user with id - %d", id)));
+                .orElseThrow(() -> new NoSuchUserException("This should never happen. If it did then, like, damn..."));
     }
 }
