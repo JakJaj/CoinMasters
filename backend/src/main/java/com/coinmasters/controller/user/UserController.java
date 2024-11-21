@@ -17,7 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDetailsResponse> getUserDetails(@PathVariable Long userId) throws NoSuchUserException {
+    public ResponseEntity<UserDetailsResponse> getUserDetails(@PathVariable Long userId){
         return ResponseEntity.ok(userService.getUserByUserId(userId));
+    }
+
+    @GetMapping("/{userId}/groups")
+    public ResponseEntity<UserGroupsResponse> getGroupsOfUser(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.getGroupsOfUser(userId));
     }
 }
