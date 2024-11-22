@@ -47,8 +47,8 @@ public class UserService {
                                 .map(group -> GroupInfo.builder()
                                         .groupId(group.getGroup().getGroupId())
                                         .groupName(group.getGroup().getGroupName())
-                                        .build())
-                                .collect(Collectors.toSet()))
+                                        .build()
+                                ).collect(Collectors.toSet()))
                         .build())
                 .orElseThrow(() -> new NoSuchUserException("This should never happen. If it did then, like, damn..."));
     }

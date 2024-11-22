@@ -26,6 +26,9 @@ public class Transaction {
     @Column(name = "date")
     private String date;
 
+    @Column(name = "amount")
+    private int amount;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
