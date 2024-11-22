@@ -11,4 +11,5 @@ public class TransactionDTO {
     private String category;
     private String date;
     private String creatorName;
+    private float amount;
 }
