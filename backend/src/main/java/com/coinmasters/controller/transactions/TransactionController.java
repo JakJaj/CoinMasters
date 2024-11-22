@@ -18,6 +18,11 @@ public class TransactionController {
     private final TransactionService transactionService;
 
 
+    /**
+     *
+     * @param groupID id of the group that you want a transactions from
+     * @return a list of transactions from a specified group
+     */
     @GetMapping("/groups/{groupID}")
     public ResponseEntity<GroupTransactionResponse> getGroupsTransactions(@PathVariable Long groupID){
         return ResponseEntity.ok(transactionService.getTransactionOfGroup(groupID));
