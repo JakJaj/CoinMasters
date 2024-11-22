@@ -5,10 +5,7 @@ import com.coinmasters.dto.TransactionDTO;
 import com.coinmasters.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/transactions")
@@ -37,5 +34,16 @@ public class TransactionController {
     @GetMapping("/{transactionID}")
     public ResponseEntity<TransactionDTO> getTransactionDetails(@PathVariable Long transactionID){
         return ResponseEntity.ok(transactionService.getTransactionDetails(transactionID));
+    }
+
+    /**
+     *
+     * @param request transaction details that follow the {@link TransactionAddRequest} schema
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return created transaction details 
+     */
+    @PostMapping("")
+    public ResponseEntity<TransactionDTO> addNewTransaction(@RequestBody TransactionAddRequest request, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(transactionService.addTransaction(request, token));
     }
 }
