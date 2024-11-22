@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     Optional<List<Transaction>> findTransactionsByGroup_GroupId(Long groupId);
-
+    Optional<Transaction> findTransactionsByTransactionId(Long transactionId);
 }
