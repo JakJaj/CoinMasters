@@ -22,4 +22,14 @@ public class GlobalExceptionHandler {
     private ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException ex){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
+
+    @ExceptionHandler(NoSuchGroupException.class)
+    private ResponseEntity<String> handleNoSuchGroupException(NoSuchGroupException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NoSuchTransactionException.class)
+    private ResponseEntity<String> handleNoSuchTransactionException(NoSuchTransactionException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }
