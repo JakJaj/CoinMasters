@@ -46,4 +46,17 @@ public class TransactionController {
     public ResponseEntity<TransactionDTO> addNewTransaction(@RequestBody TransactionAddRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(transactionService.addTransaction(request, token));
     }
+
+    /**
+     * Endpoint for deleting a transaction.
+     * Based on the current implementation,
+     * a transaction can be deleted by anyone that is a member of a group that this transaction belongs to.
+     * @param transactionID id of the transaction that you want to delete
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return response following {@link DeleteTransactionResponse} schema. Containing status about deletion of a transaction process.
+     */
+    @DeleteMapping("/{transactionID}")
+    public ResponseEntity<DeleteTransactionResponse> deleteTransaction(@PathVariable Long transactionID, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(transactionService.deleteTransaction(transactionID, token));
+    }
 }
