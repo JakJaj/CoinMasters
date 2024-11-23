@@ -10,7 +10,7 @@ import com.coinmasters.entity.User;
 import com.coinmasters.entity.UserGroup.UserGroup;
 import com.coinmasters.entity.UserGroup.UserGroupId;
 import com.coinmasters.exceptions.CannotJoinGroupException;
-import com.coinmasters.exceptions.DeletionByNonAdminUserException;
+import com.coinmasters.exceptions.GroupDeletionByNonAdminUserException;
 import com.coinmasters.exceptions.NoSuchGroupException;
 import com.coinmasters.exceptions.NoSuchUserException;
 import lombok.RequiredArgsConstructor;
@@ -128,7 +128,7 @@ public class GroupService {
                     .message(String.format("Group with id - %d was deleted", group.getGroupId()))
                     .build();
         }else {
-            throw new DeletionByNonAdminUserException("Delete action performed by an non-admin user");
+            throw new GroupDeletionByNonAdminUserException("Delete action performed by an non-admin user");
         }
     }
 }

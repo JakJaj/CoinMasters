@@ -2,6 +2,7 @@ package com.coinmasters.service;
 
 
 import com.coinmasters.config.JwtService;
+import com.coinmasters.controller.transactions.DeleteTransactionResponse;
 import com.coinmasters.controller.transactions.GroupTransactionResponse;
 import com.coinmasters.controller.transactions.TransactionAddRequest;
 import com.coinmasters.dao.GroupRepository;
@@ -11,9 +12,11 @@ import com.coinmasters.dto.TransactionDTO;
 import com.coinmasters.entity.Group;
 import com.coinmasters.entity.Transaction;
 import com.coinmasters.entity.User;
+import com.coinmasters.entity.UserGroup.UserGroup;
 import com.coinmasters.exceptions.NoSuchGroupException;
 import com.coinmasters.exceptions.NoSuchTransactionException;
 import com.coinmasters.exceptions.NoSuchUserException;
+import com.coinmasters.exceptions.TransactionDeletionByNonGroupMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,6 +99,29 @@ public class TransactionService {
         }else {
             throw new NoSuchUserException("This should never happen. If it did then, like, damn...");
         }
+
+    }
+
+    public DeleteTransactionResponse deleteTransaction(Long transactionID, String token) {
+
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("This should never happen. If it did then, like, damn..."));
+
+        Transaction transaction = transactionRepository.findTransactionsByTransactionId(transactionID)
+                .orElseThrow(() -> new NoSuchTransactionException(String.format("No transaction with id - %s", transactionID)));
+
+        for(UserGroup group: user.getUserGroups()){
+
+            if (group.getGroup().getGroupId().longValue() == transaction.getGroup().getGroupId().longValue()){
+                transactionRepository.delete(transaction);
+                return DeleteTransactionResponse.builder()
+                        .status("Deleted")
+                        .message("Transaction deleted")
+                        .build();
+            }
+        }
+
+        throw new TransactionDeletionByNonGroupMemberException("Deletion by an user that isn't a group member");
 
     }
 }

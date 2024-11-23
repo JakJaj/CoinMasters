@@ -2,6 +2,7 @@ package com.coinmasters.exceptions;
 
 import com.coinmasters.controller.group.DeleteGroupResponse;
 import com.coinmasters.controller.group.JoinGroupResponse;
+import com.coinmasters.controller.transactions.DeleteTransactionResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +41,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus()).body(ex.getJoinGroupResponse());
     }
 
-    @ExceptionHandler(DeletionByNonAdminUserException.class)
-    private ResponseEntity<DeleteGroupResponse> handleDeletionByNonAdminUserException(DeletionByNonAdminUserException ex){
+    @ExceptionHandler(GroupDeletionByNonAdminUserException.class)
+    private ResponseEntity<DeleteGroupResponse> handleDeletionByNonAdminUserException(GroupDeletionByNonAdminUserException ex){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(DeleteGroupResponse.builder()
+                        .status("Unauthorized")
+                        .message(ex.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(TransactionDeletionByNonGroupMemberException.class)
+    private ResponseEntity<DeleteTransactionResponse> handleTransactionDeletionByNonGroupMemberException(TransactionDeletionByNonGroupMemberException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(DeleteTransactionResponse.builder()
                         .status("Unauthorized")
                         .message(ex.getMessage())
                         .build());
