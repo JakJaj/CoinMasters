@@ -1,5 +1,6 @@
 package com.coinmasters.exceptions;
 
+import com.coinmasters.controller.group.JoinGroupResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchTransactionException.class)
     private ResponseEntity<String> handleNoSuchTransactionException(NoSuchTransactionException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CannotJoinGroupException.class)
+    private ResponseEntity<JoinGroupResponse> handleCannotJoinGroupException(CannotJoinGroupException ex){
+        return ResponseEntity.status(ex.getStatus()).body(ex.getJoinGroupResponse());
     }
 }
