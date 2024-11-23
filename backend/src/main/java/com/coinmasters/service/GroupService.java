@@ -10,6 +10,7 @@ import com.coinmasters.entity.User;
 import com.coinmasters.entity.UserGroup.UserGroup;
 import com.coinmasters.entity.UserGroup.UserGroupId;
 import com.coinmasters.exceptions.CannotJoinGroupException;
+import com.coinmasters.exceptions.DeletionByNonAdminUserException;
 import com.coinmasters.exceptions.NoSuchGroupException;
 import com.coinmasters.exceptions.NoSuchUserException;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 import com.coinmasters.entity.Group;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -116,4 +114,21 @@ public class GroupService {
                 .build();
     }
 
+    public DeleteGroupResponse deleteGroup(Long groupID, String token) {
+
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just really can't happen. But if it did then something is wrong."));
+
+        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
+
+        if (group.getAdminUserId().getUserId().longValue() == user.getUserId().longValue()){
+            groupRepository.delete(group);
+            return DeleteGroupResponse.builder()
+                    .status("Deleted")
+                    .message(String.format("Group with id - %d was deleted", group.getGroupId()))
+                    .build();
+        }else {
+            throw new DeletionByNonAdminUserException("Delete action performed by an non-admin user");
+        }
+    }
 }
