@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
     Optional<Group> getGroupByGroupId(Long groupId);
+    Optional<Group> getGroupByJoinCode(String joinCode);
 }
