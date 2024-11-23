@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users_groups")
+@Builder
 public class UserGroup {
 
     @EmbeddedId
