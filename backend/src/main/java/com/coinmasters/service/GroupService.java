@@ -1,8 +1,7 @@
 package com.coinmasters.service;
 
 import com.coinmasters.config.JwtService;
-import com.coinmasters.controller.group.JoinGroupRequest;
-import com.coinmasters.controller.group.JoinGroupResponse;
+import com.coinmasters.controller.group.*;
 import com.coinmasters.controller.user.GroupInfo;
 import com.coinmasters.dao.GroupRepository;
 import com.coinmasters.dao.UserGroupRepository;
@@ -20,7 +19,9 @@ import com.coinmasters.entity.Group;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -78,4 +79,41 @@ public class GroupService {
                         .build())
                 .build();
     }
+
+    public CreateGroupResponse createGroup(CreateGroupRequest request, String token) {
+
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just really can't happen. But if it did then something is wrong."));
+
+        Group group = groupRepository.save(Group.builder()
+                .groupName(request.getGroupName())
+                .goal(request.getGoal())
+                .currency(request.getCurrency())
+                .joinCode(GroupUtils.crateJoinCode())
+                .userGroups(new HashSet<>())
+                .adminUserId(user)
+                .build());
+
+        UserGroup userGroup = userGroupRepository.save(
+                UserGroup.builder()
+                        .id(new UserGroupId(user.getUserId(), group.getGroupId()))
+                        .user(user)
+                        .group(group)
+                        .joinDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()))
+                        .build()
+        );
+
+        group.getUserGroups().add(userGroup);
+        user.getUserGroups().add(userGroup);
+
+        return CreateGroupResponse.builder()
+                .groupId(group.getGroupId())
+                .groupName(group.getGroupName())
+                .goal(group.getGoal())
+                .currency(group.getCurrency())
+                .joinCode(group.getJoinCode())
+                .creatorName(user.getName())
+                .build();
+    }
+
 }
