@@ -37,7 +37,7 @@ public class Group {
     @JoinColumn(name = "admin_user_id")
     private User adminUserId;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private Set<UserGroup> userGroups;
 
     public Group(String goal, String currency, String joinCode, User adminUserId){
