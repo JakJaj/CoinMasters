@@ -35,4 +35,15 @@ public class GroupController {
     public ResponseEntity<CreateGroupResponse> createGroup(@RequestBody CreateGroupRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.createGroup(request, token));
     }
+
+    /**
+     * Endpoint for user to delete a group u need to specify a groupID as a path variable.
+     * @param groupID A path variable that you need to specify in URL
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return Response that is using schema {@link DeleteGroupResponse}. You will get status about a group being deleted or not.
+     */
+    @DeleteMapping("/{groupID}")
+    public ResponseEntity<DeleteGroupResponse> deleteGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.deleteGroup(groupID, token));
+    }
 }
