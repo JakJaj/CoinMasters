@@ -13,6 +13,17 @@ public class GroupController {
     private final GroupService groupService;
 
     /**
+     * Endpoint for getting a list of all users that are a member of a specified group
+     * @param groupID id of the group that you want to get users of
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return Response that is using schema {@link GroupUsersResponse}.
+     * You will get details about every user that is a part of a group including the user that is calling this function
+     */
+    @GetMapping("/{groupID}/users")
+    public ResponseEntity<GroupUsersResponse> getAllUsersFromGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.getAllUsersFromGroup(groupID, token));
+    }
+    /**
      *  Endpoint for user to join a group u needs to specify a join code using {@link JoinGroupRequest} schema.
      *  A user that needs to be added to a group will be taken from jwt token data.
      * @param request Schema for providing join code see - {@link JoinGroupRequest}
