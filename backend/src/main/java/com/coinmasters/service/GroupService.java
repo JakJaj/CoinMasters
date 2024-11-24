@@ -2,7 +2,7 @@ package com.coinmasters.service;
 
 import com.coinmasters.config.JwtService;
 import com.coinmasters.controller.group.*;
-import com.coinmasters.controller.user.GroupInfo;
+import com.coinmasters.dto.GroupDTO;
 import com.coinmasters.dao.GroupRepository;
 import com.coinmasters.dao.UserGroupRepository;
 import com.coinmasters.dao.UserRepository;
@@ -12,6 +12,7 @@ import com.coinmasters.entity.UserGroup.UserGroupId;
 import com.coinmasters.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.coinmasters.entity.Group;
 
@@ -68,10 +69,11 @@ public class GroupService {
         return JoinGroupResponse.builder()
                 .status("Success")
                 .message("User added to a group")
-                .group(GroupInfo.builder()
+                .group(GroupDTO.builder()
                         .groupId(group.getGroupId())
                         .groupName(group.getGroupName())
                         .goal(group.getGoal())
+                        .currency(group.getCurrency())
                         .build())
                 .build();
     }
@@ -130,52 +132,45 @@ public class GroupService {
         }
     }
 
-    public ChangeGoalResponse changeGroupGoal(Long groupID, ChangeGoalRequest request, String token) {
+
+    public ChangeGroupDetailsResponse changeGroupDetails(Long groupID, ChangeGroupDetailsRequest request, String token) {
 
         String email = jwtService.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just really can't happen. But if it did then something is wrong."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just rally can't happen. If it did then, like, damn..."));
 
         Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
 
-        if (!Objects.equals(group.getAdminUserId().getUserId(), user.getUserId())){
-            throw new ActionPerformedByNonAdminUserException("Action performed by non admin user");
+
+        if (group.getAdminUserId().getUserId().equals(user.getUserId())){
+
+            if (request.getNewGroupName() != null && !request.getNewGroupName().equals(group.getGroupName())) {
+                group.setGroupName(request.getNewGroupName());
+            }
+
+            if (request.getNewCurrency() != null && !request.getNewCurrency().equals(group.getCurrency())) {
+                group.setCurrency(request.getNewCurrency());
+            }
+
+            if (request.getNewGoal() != null && !request.getNewGoal().equals(group.getGoal())) {
+                group.setGoal(request.getNewGoal());
+            }
+
+            Group savedGroup = groupRepository.save(group);
+
+            return ChangeGroupDetailsResponse.builder()
+                    .status("Changed")
+                    .message("Details changed")
+                    .group(GroupDTO.builder()
+                            .groupId(savedGroup.getGroupId())
+                            .groupName(savedGroup.getGroupName())
+                            .goal(savedGroup.getGoal())
+                            .currency(savedGroup.getCurrency())
+                            .build())
+                    .build();
+        }
+        else {
+            throw new ActionPerformedByNonAdminUserException("Group data change performed by non admin user");
         }
 
-        if (group.getGoal().equals(request.getNewGoal())){
-            throw new IncorrectGoalException("The old goal is the same as the new one");
-        }
-        group.setGoal(request.getNewGoal());
-
-        groupRepository.save(group);
-
-        return ChangeGoalResponse.builder()
-                .status("Success")
-                .message("New goal set at: " + request.getNewGoal())
-                .build();
     }
-
-    public ChangeCurrencyResponse changeGroupCurrency(Long groupID, ChangeCurrencyRequest request, String token) {
-
-        String email = jwtService.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just really can't happen. But if it did then something is wrong."));
-
-        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
-
-        if (!Objects.equals(group.getAdminUserId().getUserId(), user.getUserId())){
-            throw new ActionPerformedByNonAdminUserException("Action performed by non admin user");
-        }
-
-        if (group.getCurrency().equals(request.getNewCurrency())){
-            throw new IncorrectCurrencyException("The old currency is the same as the new one");
-        }
-        group.setCurrency(request.getNewCurrency());
-
-        groupRepository.save(group);
-
-        return ChangeCurrencyResponse.builder()
-                .status("Success")
-                .message("New currency: " + request.getNewCurrency())
-                .build();
-    }
-
 }
