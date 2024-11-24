@@ -1,6 +1,7 @@
 package com.coinmasters.controller.transactions;
 
 
+import com.coinmasters.controller.group.ChangeGroupDetailsResponse;
 import com.coinmasters.dto.TransactionDTO;
 import com.coinmasters.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -58,5 +59,22 @@ public class TransactionController {
     @DeleteMapping("/{transactionID}")
     public ResponseEntity<DeleteTransactionResponse> deleteTransaction(@PathVariable Long transactionID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(transactionService.deleteTransaction(transactionID, token));
+    }
+
+    /**
+     * Endpoint for changing transaction detail.
+     * Based on this implementation, the user modifying the transactions becomes a new creator.
+     * Remember date format YYYY-MM-DD.
+     * @param transactionID id of transaction that you want to change details of
+     * @param request request body following {@link ChangeTransactionDetailsRequest} schema.
+     *                It can take at least one detail to change.
+     *                Otherwise, it will throw {@link com.coinmasters.exceptions.NothingToChangeException}
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return Response using {@link ChangeTransactionDetailsResponse} schema.
+     * That contains status, message and new transaction details.
+     */
+    @PutMapping("/{transactionID}")
+    public ResponseEntity<ChangeTransactionDetailsResponse> changeTransactionDetails(@PathVariable Long transactionID, @RequestBody ChangeTransactionDetailsRequest request, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(transactionService.changeTransactionDetails(transactionID, request, token));
     }
 }
