@@ -3,6 +3,7 @@ package com.coinmasters.exceptions;
 import com.coinmasters.controller.group.DeleteGroupResponse;
 import com.coinmasters.controller.group.JoinGroupResponse;
 import com.coinmasters.controller.transactions.DeleteTransactionResponse;
+import com.coinmasters.controller.user.ChangePasswordResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,13 @@ public class GlobalExceptionHandler {
                         .status("Unauthorized")
                         .message(ex.getMessage())
                         .build());
+    }
+
+    @ExceptionHandler(IncorrectPasswordException.class)
+    private ResponseEntity<ChangePasswordResponse> handleIncorrectPasswordException(IncorrectPasswordException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ChangePasswordResponse.builder()
+                .status("Failure")
+                .message(ex.getMessage())
+                .build());
     }
 }
