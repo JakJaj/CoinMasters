@@ -47,6 +47,16 @@ public class GroupController {
         return ResponseEntity.ok(groupService.deleteGroup(groupID, token));
     }
 
+    /**
+     * Endpoint for changing details of a group.
+     * This can only be performed by a group admin.
+     * Otherwise, it will return the {@link com.coinmasters.exceptions.ActionPerformedByNonAdminUserException}.
+     * @param groupID path variable that indicates what group details will be changed.
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @param request request that is using {@link ChangeGroupDetailsRequest} schema. It can take at least one detail to change.
+     *                Otherwise, it will throw {@link com.coinmasters.exceptions.NothingToChangeException}
+     * @return Response using {@link ChangeGroupDetailsResponse} schema. That contains status, message and new group details.
+     */
     @PutMapping("/{groupID}")
     private ResponseEntity<ChangeGroupDetailsResponse> changeGroupDetails(@PathVariable Long groupID, @RequestHeader("Authorization") String token, @RequestBody ChangeGroupDetailsRequest request){
         return ResponseEntity.ok(groupService.changeGroupDetails(groupID, request, token));

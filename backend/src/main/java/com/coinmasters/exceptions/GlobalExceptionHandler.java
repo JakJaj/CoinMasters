@@ -1,5 +1,6 @@
 package com.coinmasters.exceptions;
 
+import com.coinmasters.controller.group.ChangeGroupDetailsResponse;
 import com.coinmasters.controller.group.DeleteGroupResponse;
 import com.coinmasters.controller.group.JoinGroupResponse;
 import com.coinmasters.controller.transactions.DeleteTransactionResponse;
@@ -68,5 +69,13 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
+    @ExceptionHandler(NothingToChangeException.class)
+    private ResponseEntity<ChangeGroupDetailsResponse> handleNothingToChangeException(NothingToChangeException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ChangeGroupDetailsResponse.builder()
+                        .status("Failure")
+                        .message("No correct data passed")
+                        .group(null)
+                .build());
+    }
 
 }

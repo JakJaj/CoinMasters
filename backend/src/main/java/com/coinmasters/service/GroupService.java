@@ -140,7 +140,7 @@ public class GroupService {
 
         Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
 
-
+        if (request.getNewGoal() == null && request.getNewCurrency() == null && request.getNewGroupName() == null) throw new NothingToChangeException("All data is null. Something went wrong while passing data in");
         if (group.getAdminUserId().getUserId().equals(user.getUserId())){
 
             if (request.getNewGroupName() != null && !request.getNewGroupName().equals(group.getGroupName())) {
