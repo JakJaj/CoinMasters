@@ -51,4 +51,9 @@ public class GroupController {
     private ResponseEntity<ChangeGoalResponse> changeGroupGoal(@PathVariable Long groupID, @RequestBody ChangeGoalRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.changeGroupGoal(groupID, request, token));
     }
+
+    @PutMapping("/{groupID}/currency")
+    private ResponseEntity<ChangeCurrencyResponse> changeGroupCurrency(@PathVariable Long groupID, @RequestBody ChangeCurrencyRequest request, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.changeGroupCurrency(groupID, request, token));
+    }
 }
