@@ -70,11 +70,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NothingToChangeException.class)
-    private ResponseEntity<ChangeGroupDetailsResponse> handleNothingToChangeException(NothingToChangeException ex){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ChangeGroupDetailsResponse.builder()
+    private ResponseEntity<NothingToChangeResponse> handleNothingToChangeException(NothingToChangeException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(NothingToChangeResponse.builder()
                         .status("Failure")
-                        .message("No correct data passed")
-                        .group(null)
+                        .message(ex.getMessage())
                 .build());
     }
 
