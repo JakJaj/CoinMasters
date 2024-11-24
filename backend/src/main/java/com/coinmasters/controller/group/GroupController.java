@@ -46,4 +46,9 @@ public class GroupController {
     public ResponseEntity<DeleteGroupResponse> deleteGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.deleteGroup(groupID, token));
     }
+
+    @PutMapping("/{groupID}/goal")
+    private ResponseEntity<ChangeGoalResponse> changeGroupGoal(@PathVariable Long groupID, @RequestBody ChangeGoalRequest request, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.changeGroupGoal(groupID, request, token));
+    }
 }
