@@ -59,6 +59,17 @@ public class GroupController {
     }
 
     /**
+     * Endpoint for a user to delete itself from a specified group.
+     * @param groupID id of the group that user wants to be removed from
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return
+     */
+    @DeleteMapping("{groupID}/users")
+    public ResponseEntity<RemoveUserResponse> removeUserFromGroup( @PathVariable Long groupID, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.removeUserFromGroup( groupID, token));
+    }
+
+    /**
      * Endpoint for changing details of a group.
      * This can only be performed by a group admin.
      * Otherwise, it will return the {@link com.coinmasters.exceptions.ActionPerformedByNonAdminUserException}.
