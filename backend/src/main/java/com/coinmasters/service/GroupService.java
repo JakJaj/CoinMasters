@@ -2,6 +2,7 @@ package com.coinmasters.service;
 
 import com.coinmasters.config.JwtService;
 import com.coinmasters.controller.group.*;
+import com.coinmasters.controller.user.UserDetailsResponse;
 import com.coinmasters.dto.GroupDTO;
 import com.coinmasters.dao.GroupRepository;
 import com.coinmasters.dao.UserGroupRepository;
@@ -18,6 +19,7 @@ import com.coinmasters.entity.Group;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -172,5 +174,32 @@ public class GroupService {
             throw new ActionPerformedByNonAdminUserException("Group data change performed by non admin user");
         }
 
+    }
+
+    public GroupUsersResponse getAllUsersFromGroup(Long groupID, String token) {
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just rally can't happen. If it did then, like, damn..."));
+
+        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
+
+        boolean isUserInGroup = user.getUserGroups().stream()
+                .anyMatch(userGroup -> userGroup.getGroup().getGroupId().equals(groupID));
+
+        if (!isUserInGroup){
+            throw new UserNotAMemberOfTheGroupException("User isn't a part of a specified group");
+        }
+        Set<User> groupUsers = group.getUserGroups().stream()
+                .map(UserGroup::getUser)
+                .collect(Collectors.toSet());
+
+        List<UserDetailsResponse> users = groupUsers.stream()
+                .map(u -> new UserDetailsResponse(u.getUserId(), u.getName(), u.getEmail(), u.getRolee().toString()))
+                .toList();
+
+        return GroupUsersResponse.builder()
+                .status("Success")
+                .message("Returned list of users")
+                .groupMembers(users)
+                .build();
     }
 }

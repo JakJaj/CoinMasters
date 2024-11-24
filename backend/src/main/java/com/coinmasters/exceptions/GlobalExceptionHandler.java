@@ -2,6 +2,7 @@ package com.coinmasters.exceptions;
 
 import com.coinmasters.controller.group.ChangeGroupDetailsResponse;
 import com.coinmasters.controller.group.DeleteGroupResponse;
+import com.coinmasters.controller.group.GroupUsersResponse;
 import com.coinmasters.controller.group.JoinGroupResponse;
 import com.coinmasters.controller.transactions.DeleteTransactionResponse;
 import com.coinmasters.controller.user.ChangePasswordResponse;
@@ -10,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -76,5 +80,12 @@ public class GlobalExceptionHandler {
                         .message(ex.getMessage())
                 .build());
     }
-
+    @ExceptionHandler(UserNotAMemberOfTheGroupException.class)
+    private ResponseEntity<GroupUsersResponse> handleUserNotAMemberOfTheGroupException(UserNotAMemberOfTheGroupException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(GroupUsersResponse.builder()
+                .status("Failure")
+                .message(ex.getMessage())
+                .groupMembers(new ArrayList<>())
+                .build());
+    }
 }
