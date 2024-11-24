@@ -3,6 +3,7 @@ package com.coinmasters.service;
 import com.coinmasters.config.JwtService;
 import com.coinmasters.controller.group.*;
 import com.coinmasters.controller.user.UserDetailsResponse;
+import com.coinmasters.dao.TransactionRepository;
 import com.coinmasters.dto.GroupDTO;
 import com.coinmasters.dao.GroupRepository;
 import com.coinmasters.dao.UserGroupRepository;
@@ -11,6 +12,7 @@ import com.coinmasters.entity.User;
 import com.coinmasters.entity.UserGroup.UserGroup;
 import com.coinmasters.entity.UserGroup.UserGroupId;
 import com.coinmasters.exceptions.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final UserGroupRepository userGroupRepository;
+    private final TransactionRepository transactionRepository;
     private final JwtService jwtService;
 
     public JoinGroupResponse joinGroup(JoinGroupRequest request, String token) {
@@ -200,6 +203,29 @@ public class GroupService {
                 .status("Success")
                 .message("Returned list of users")
                 .groupMembers(users)
+                .build();
+    }
+
+
+    @Transactional
+    public RemoveUserResponse removeUserFromGroup(Long groupID, String token) {
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just rally can't happen. If it did then, like, damn..."));
+
+        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
+
+        boolean isUserInGroup = user.getUserGroups().stream()
+                .anyMatch(userGroup -> userGroup.getGroup().getGroupId().equals(groupID));
+
+        if (!isUserInGroup){
+            throw new UserNotAMemberOfTheGroupException("User isn't a part of a specified group");
+        }
+
+        userGroupRepository.deleteByGroup_GroupIdAndUser_UserId(group.getGroupId(),user.getUserId());
+
+        return RemoveUserResponse.builder()
+                .status("Success")
+                .message("User removed self from group")
                 .build();
     }
 }

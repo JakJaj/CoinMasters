@@ -1,9 +1,6 @@
 package com.coinmasters.exceptions;
 
-import com.coinmasters.controller.group.ChangeGroupDetailsResponse;
-import com.coinmasters.controller.group.DeleteGroupResponse;
-import com.coinmasters.controller.group.GroupUsersResponse;
-import com.coinmasters.controller.group.JoinGroupResponse;
+import com.coinmasters.controller.group.*;
 import com.coinmasters.controller.transactions.DeleteTransactionResponse;
 import com.coinmasters.controller.user.ChangePasswordResponse;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -81,11 +78,18 @@ public class GlobalExceptionHandler {
                 .build());
     }
     @ExceptionHandler(UserNotAMemberOfTheGroupException.class)
-    private ResponseEntity<GroupUsersResponse> handleUserNotAMemberOfTheGroupException(UserNotAMemberOfTheGroupException ex){
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(GroupUsersResponse.builder()
+    private ResponseEntity<NothingToChangeResponse> handleUserNotAMemberOfTheGroupException(UserNotAMemberOfTheGroupException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(NothingToChangeResponse.builder()
                 .status("Failure")
                 .message(ex.getMessage())
-                .groupMembers(new ArrayList<>())
+                .build());
+    }
+
+    @ExceptionHandler(AdminDeletingException.class)
+    private ResponseEntity<RemoveUserResponse> handleAdminDeletingException(AdminDeletingException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(RemoveUserResponse.builder()
+                .status("Failure")
+                .message(ex.getMessage())
                 .build());
     }
 }
