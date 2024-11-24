@@ -33,4 +33,8 @@ public class UserController {
     public ResponseEntity<UserGroupsResponse> getGroupsOfUser(@RequestHeader("Authorization") String token){
         return ResponseEntity.ok(userService.getGroupsOfUser(token));
     }
+    @PutMapping("/password")
+    public ResponseEntity<ChangePasswordResponse> changePassword(@RequestBody ChangePasswordRequest request, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.changePassword(request, token));
+    }
 }
