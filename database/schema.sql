@@ -28,6 +28,7 @@ CREATE TABLE transactions (
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(45) NOT NULL,
     category VARCHAR(45) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
     date DATE NOT NULL,
     user_id INT NOT NULL,
     group_id INT NOT NULL,
