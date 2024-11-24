@@ -1,5 +1,7 @@
 package com.coinmasters.exceptions;
 
+import com.coinmasters.controller.group.ChangeCurrencyResponse;
+import com.coinmasters.controller.group.ChangeGoalResponse;
 import com.coinmasters.controller.group.DeleteGroupResponse;
 import com.coinmasters.controller.group.JoinGroupResponse;
 import com.coinmasters.controller.transactions.DeleteTransactionResponse;
@@ -67,4 +69,21 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .build());
     }
+
+    @ExceptionHandler(IncorrectGoalException.class)
+    private ResponseEntity<ChangeGoalResponse> handleIncorrectGoalException(IncorrectGoalException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ChangeGoalResponse.builder()
+                .status("Failure")
+                .message(ex.getMessage())
+                .build());
+    }
+
+    @ExceptionHandler(IncorrectCurrencyException.class)
+    private ResponseEntity<ChangeCurrencyResponse> handleIncorrectCurrencyException(IncorrectCurrencyException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ChangeCurrencyResponse.builder()
+                .status("Failure")
+                .message(ex.getMessage())
+                .build());
+    }
+
 }

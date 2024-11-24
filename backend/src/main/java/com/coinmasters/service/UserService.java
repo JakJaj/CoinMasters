@@ -49,6 +49,7 @@ public class UserService {
                                 .map(group -> GroupInfo.builder()
                                         .groupId(group.getGroup().getGroupId())
                                         .groupName(group.getGroup().getGroupName())
+                                        .goal(group.getGroup().getGoal())
                                         .build()
                                 ).collect(Collectors.toSet()))
                         .build())

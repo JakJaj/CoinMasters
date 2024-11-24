@@ -71,6 +71,7 @@ public class GroupService {
                 .group(GroupInfo.builder()
                         .groupId(group.getGroupId())
                         .groupName(group.getGroupName())
+                        .goal(group.getGoal())
                         .build())
                 .build();
     }
@@ -150,6 +151,30 @@ public class GroupService {
         return ChangeGoalResponse.builder()
                 .status("Success")
                 .message("New goal set at: " + request.getNewGoal())
+                .build();
+    }
+
+    public ChangeCurrencyResponse changeGroupCurrency(Long groupID, ChangeCurrencyRequest request, String token) {
+
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just really can't happen. But if it did then something is wrong."));
+
+        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
+
+        if (!Objects.equals(group.getAdminUserId().getUserId(), user.getUserId())){
+            throw new ActionPerformedByNonAdminUserException("Action performed by non admin user");
+        }
+
+        if (group.getCurrency().equals(request.getNewCurrency())){
+            throw new IncorrectCurrencyException("The old currency is the same as the new one");
+        }
+        group.setCurrency(request.getNewCurrency());
+
+        groupRepository.save(group);
+
+        return ChangeCurrencyResponse.builder()
+                .status("Success")
+                .message("New currency: " + request.getNewCurrency())
                 .build();
     }
 

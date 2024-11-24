@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class GroupInfo {
     private Long groupId;
     private String groupName;
+    private String goal;
 }
