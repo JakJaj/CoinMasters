@@ -62,13 +62,24 @@ public class GroupController {
      * Endpoint for a user to delete itself from a specified group.
      * @param groupID id of the group that user wants to be removed from
      * @param token this token is provided in an Authorization header without (you will get it after logging in)
-     * @return
+     * @return Response using {@link RemoveUserResponse} schema. That contains status and message about the process.
      */
-    @DeleteMapping("{groupID}/users")
-    public ResponseEntity<RemoveUserResponse> removeUserFromGroup( @PathVariable Long groupID, @RequestHeader("Authorization") String token){
-        return ResponseEntity.ok(groupService.removeUserFromGroup( groupID, token));
+    @DeleteMapping("/{groupID}/users")
+    public ResponseEntity<RemoveUserResponse> removeSelfFromGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.removeSelfFromGroup( groupID, token));
     }
 
+    /**
+     * Endpoint for group admins to delete a user that is a member of the group
+     * @param groupID id of the group that admin wants to delete the user from
+     * @param userID id of the user that you want to delete
+     * @param token this token is provided in an Authorization header without (you will get it after logging in)
+     * @return Response using {@link RemoveUserResponse} schema. That contains status and message about the process.
+     */
+    @DeleteMapping("/{groupID}/users/{userID}")
+    public ResponseEntity<RemoveUserResponse> removeUserFromGroup(@PathVariable Long groupID, @PathVariable Long userID, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(groupService.removeUserFromGroup(groupID,userID,token));
+    }
     /**
      * Endpoint for changing details of a group.
      * This can only be performed by a group admin.

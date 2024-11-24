@@ -208,7 +208,7 @@ public class GroupService {
 
 
     @Transactional
-    public RemoveUserResponse removeUserFromGroup(Long groupID, String token) {
+    public RemoveUserResponse removeSelfFromGroup(Long groupID, String token) {
         String email = jwtService.extractUsername(token.substring(7));
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just rally can't happen. If it did then, like, damn..."));
 
@@ -228,4 +228,34 @@ public class GroupService {
                 .message("User removed self from group")
                 .build();
     }
+
+    @Transactional
+    public RemoveUserResponse removeUserFromGroup(Long groupID, Long userToDeleteID, String token) {
+        String email = jwtService.extractUsername(token.substring(7));
+        User userAdmin = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just rally can't happen. If it did then, like, damn..."));
+
+        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
+
+        if (!userAdmin.getUserId().equals(group.getAdminUserId().getUserId())){
+            throw new ActionPerformedByNonAdminUserException("Action performed by a non admin user");
+        }
+
+        User userToDelete = userRepository.findByUserId(userToDeleteID).orElseThrow(() -> new NoSuchUserException("User doesn't exist"));
+
+        if (userToDelete.getUserId().equals(group.getAdminUserId().getUserId())){
+            throw new AdminDeletingException("Admin can't be removed from the group");
+        }
+
+        for (UserGroup userGroup: userToDelete.getUserGroups()){
+            if (userGroup.getGroup().getGroupId().equals(group.getGroupId())){
+                userGroupRepository.deleteByGroup_GroupIdAndUser_UserId(groupID, userToDeleteID);
+            }
+        }
+
+        return RemoveUserResponse.builder()
+                .status("Success")
+                .message("User removed")
+                .build();
+    }
+
 }
