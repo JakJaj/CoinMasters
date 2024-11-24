@@ -9,10 +9,7 @@ import com.coinmasters.dao.UserRepository;
 import com.coinmasters.entity.User;
 import com.coinmasters.entity.UserGroup.UserGroup;
 import com.coinmasters.entity.UserGroup.UserGroupId;
-import com.coinmasters.exceptions.CannotJoinGroupException;
-import com.coinmasters.exceptions.GroupDeletionByNonAdminUserException;
-import com.coinmasters.exceptions.NoSuchGroupException;
-import com.coinmasters.exceptions.NoSuchUserException;
+import com.coinmasters.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -128,7 +125,32 @@ public class GroupService {
                     .message(String.format("Group with id - %d was deleted", group.getGroupId()))
                     .build();
         }else {
-            throw new GroupDeletionByNonAdminUserException("Delete action performed by an non-admin user");
+            throw new ActionPerformedByNonAdminUserException("Delete action performed by an non-admin user");
         }
     }
+
+    public ChangeGoalResponse changeGroupGoal(Long groupID, ChangeGoalRequest request, String token) {
+
+        String email = jwtService.extractUsername(token.substring(7));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchUserException("It just really can't happen. But if it did then something is wrong."));
+
+        Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
+
+        if (!Objects.equals(group.getAdminUserId().getUserId(), user.getUserId())){
+            throw new ActionPerformedByNonAdminUserException("Action performed by non admin user");
+        }
+
+        if (group.getGoal().equals(request.getNewGoal())){
+            throw new IncorrectGoalException("The old goal is the same as the new one");
+        }
+        group.setGoal(request.getNewGoal());
+
+        groupRepository.save(group);
+
+        return ChangeGoalResponse.builder()
+                .status("Success")
+                .message("New goal set at: " + request.getNewGoal())
+                .build();
+    }
+
 }

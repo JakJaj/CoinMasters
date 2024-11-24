@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus()).body(ex.getJoinGroupResponse());
     }
 
-    @ExceptionHandler(GroupDeletionByNonAdminUserException.class)
-    private ResponseEntity<DeleteGroupResponse> handleDeletionByNonAdminUserException(GroupDeletionByNonAdminUserException ex){
+    @ExceptionHandler(ActionPerformedByNonAdminUserException.class)
+    private ResponseEntity<DeleteGroupResponse> handleDeletionByNonAdminUserException(ActionPerformedByNonAdminUserException ex){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(DeleteGroupResponse.builder()
                         .status("Unauthorized")
