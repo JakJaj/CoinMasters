@@ -1,14 +1,13 @@
 package com.coinmasters.controller.group;
 
-import com.coinmasters.controller.user.GroupInfo;
+import com.coinmasters.dto.GroupDTO;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @Builder
 public class JoinGroupResponse {
     private String status;
     private String message;
-    private GroupInfo group;
+    private GroupDTO group;
 }

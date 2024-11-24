@@ -1,8 +1,8 @@
 package com.coinmasters.controller.user;
 
+import com.coinmasters.dto.GroupDTO;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -10,5 +10,5 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class UserGroupsResponse {
-    private Set<GroupInfo> userGroups;
+    private Set<GroupDTO> userGroups;
 }
