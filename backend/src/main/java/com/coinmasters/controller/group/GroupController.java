@@ -90,7 +90,7 @@ public class GroupController {
      *                Otherwise, it will throw {@link com.coinmasters.exceptions.NothingToChangeException}
      * @return Response using {@link ChangeGroupDetailsResponse} schema. That contains status, message and new group details.
      */
-    @PutMapping("/{groupID}")
+    @PatchMapping("/{groupID}")
     private ResponseEntity<ChangeGroupDetailsResponse> changeGroupDetails(@PathVariable Long groupID, @RequestHeader("Authorization") String token, @RequestBody ChangeGroupDetailsRequest request){
         return ResponseEntity.ok(groupService.changeGroupDetails(groupID, request, token));
     }

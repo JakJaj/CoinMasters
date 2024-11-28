@@ -73,7 +73,7 @@ public class TransactionController {
      * @return Response using {@link ChangeTransactionDetailsResponse} schema.
      * That contains status, message and new transaction details.
      */
-    @PutMapping("/{transactionID}")
+    @PatchMapping("/{transactionID}")
     public ResponseEntity<ChangeTransactionDetailsResponse> changeTransactionDetails(@PathVariable Long transactionID, @RequestBody ChangeTransactionDetailsRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(transactionService.changeTransactionDetails(transactionID, request, token));
     }
