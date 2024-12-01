@@ -2,10 +2,7 @@ package com.coinmasters.entity;
 
 import com.coinmasters.entity.UserGroup.UserGroup;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -15,7 +12,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@ToString
+@Builder
 public class Group {
 
     @Id
@@ -39,7 +37,7 @@ public class Group {
     @JoinColumn(name = "admin_user_id")
     private User adminUserId;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private Set<UserGroup> userGroups;
 
     public Group(String goal, String currency, String joinCode, User adminUserId){

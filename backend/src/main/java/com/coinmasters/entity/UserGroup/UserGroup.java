@@ -3,10 +3,7 @@ package com.coinmasters.entity.UserGroup;
 import com.coinmasters.entity.Group;
 import com.coinmasters.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -14,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users_groups")
+@Builder
+@ToString
 public class UserGroup {
 
     @EmbeddedId

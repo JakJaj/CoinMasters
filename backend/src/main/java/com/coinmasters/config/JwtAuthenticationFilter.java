@@ -1,11 +1,13 @@
 package com.coinmasters.config;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,8 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             return;
         }
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
+        try {
+            jwt = authHeader.substring(7);
+            userEmail = jwtService.extractUsername(jwt);
+
+
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(jwt, userDetails)){
@@ -51,6 +56,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
         }
-        filterChain.doFilter(request,response);
+            filterChain.doFilter(request,response);
+
+        }catch (ExpiredJwtException e){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"JWT expired\"}");
+            response.getWriter().flush();
+            response.getWriter().close();
+        }
     }
 }

@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class Transaction {
 
     @Id
@@ -25,6 +26,9 @@ public class Transaction {
 
     @Column(name = "date")
     private String date;
+
+    @Column(name = "amount")
+    private float amount;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

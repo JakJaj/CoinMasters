@@ -5,6 +5,7 @@ import com.coinmasters.dao.UserRepository;
 import com.coinmasters.entity.Role;
 import com.coinmasters.entity.User;
 import com.coinmasters.exceptions.NoSuchUserException;
+import com.coinmasters.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request){
+        var existingUser = repository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) throw new UserAlreadyExistsException("User with this email already exists");
         String salt = SecurityUtils.generateSalt();
         var user = User.builder()
                 .name(request.getName())
@@ -37,7 +40,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) throws NoSuchUserException {
+    public AuthenticationResponse authenticate(AuthenticationRequest request){
 
         var user = repository.findByEmail(request.getEmail());
         if (user.isEmpty()) throw new NoSuchUserException("No user with a specified credentials");
