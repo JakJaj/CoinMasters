@@ -86,7 +86,7 @@ export const RegisterForm = () => {
                         <FaEye className='icon' onClick={togglePasswordVisibility} />
                     )}
                 </div>
-                <Link to="/dashboard">
+                <Link to="/grouppage">
                     <button className='button' type='submit'>Register</button>
                 </Link>
 

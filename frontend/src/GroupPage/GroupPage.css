@@ -1,0 +1,35 @@
+.group-btn {
+    background: #404040;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 40px;
+}
+
+.group-btn:hover {
+    background-color: #45a049;
+}
+
+.group-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 10px;
+    grid-column: 1 / 2;
+    width: 20px;
+    height: 20px;
+}
+
+.group {
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

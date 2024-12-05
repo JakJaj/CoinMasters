@@ -21,7 +21,7 @@ export const LoginForm = () => {
                     <label><input type="checkbox" /> Remember me</label>
                     <a href="#">Forgot Password?</a>
                 </div>
-                <Link to="/dashboard">
+                <Link to="/grouppage">
                     <button className='button' type='submit'>Login</button>
                 </Link>
 

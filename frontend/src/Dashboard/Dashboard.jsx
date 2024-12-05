@@ -6,7 +6,9 @@ const Dashboard = () => {
     return (
         <div className="dashboard">
             <div className="header">
-                <button className="back-btn">BACK</button>
+                <Link to="/grouppage">
+                    <button className="back-btn">BACK</button>
+                </Link>
                 <div className="group-name">NAZWA GRUPY</div>
                 <div className="currency">WALUTA</div>
                 <div className="username">USERNAME</div>
