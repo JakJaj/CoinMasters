@@ -1,5 +1,6 @@
 import React from "react";
-import "./styles.css";
+import "./Dashboard.css";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
     return (
@@ -9,7 +10,9 @@ const Dashboard = () => {
                 <div className="group-name">NAZWA GRUPY</div>
                 <div className="currency">WALUTA</div>
                 <div className="username">USERNAME</div>
-                <button className="logout-btn">LOGOUT</button>
+                <Link to="/login">
+                    <button className="logout-btn">LOGOUT</button>
+                </Link>
             </div>
 
             <div className="main-content">

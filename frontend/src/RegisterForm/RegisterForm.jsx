@@ -55,7 +55,7 @@ export const RegisterForm = () => {
             <form onSubmit={handleSubmit}>
                 <h1>Register</h1>
                 <div className='input-box'>
-                    <input type="text" placeholder='Username' required />
+                    <input type="text" placeholder='Username' /*required*/ />
                     <FaUserCircle className='icon' />
                 </div>
                 <div className='input-box'>
@@ -64,7 +64,7 @@ export const RegisterForm = () => {
                         placeholder='Password'
                         value={password}
                         onChange={handlePasswordChange}
-                        required
+                    /*required*/
                     />
                     {showPassword ? (
                         <FaEyeSlash className='icon' onClick={togglePasswordVisibility} />
@@ -78,7 +78,7 @@ export const RegisterForm = () => {
                         placeholder='Confirm Password'
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
-                        required
+                    /*required*/
                     />
                     {showPassword ? (
                         <FaEyeSlash className='icon' onClick={togglePasswordVisibility} />
@@ -86,8 +86,9 @@ export const RegisterForm = () => {
                         <FaEye className='icon' onClick={togglePasswordVisibility} />
                     )}
                 </div>
-
-                <button className='button' type='submit'>Register</button>
+                <Link to="/dashboard">
+                    <button className='button' type='submit'>Register</button>
+                </Link>
 
                 {errors.length > 0 && (
                     <div className='error-messages'>
