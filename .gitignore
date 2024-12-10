@@ -271,5 +271,6 @@ $RECYCLE.BIN/
 *.lnk
 application.properties
 .idea/
-
+application-dev.properties
+application-prod.properties
 # End of https://www.toptal.com/developers/gitignore/api/java,react,windows,macos,linux,intellij,visualstudiocode,homebrew,maven
