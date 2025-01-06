@@ -9,11 +9,11 @@ export const LoginForm = () => {
             <form action=''>
                 <h1>Login</h1>
                 <div className='input-box'>
-                    <input type="text" placeholder='Username' required />
+                    <input type="text" placeholder='Username' /*required*/ />
                     <FaUserCircle className='icon' />
                 </div>
                 <div className='input-box'>
-                    <input type="password" placeholder='Password' required />
+                    <input type="password" placeholder='Password' /*required*/ />
                     <FaLock className='icon' />
                 </div>
 
@@ -21,8 +21,9 @@ export const LoginForm = () => {
                     <label><input type="checkbox" /> Remember me</label>
                     <a href="#">Forgot Password?</a>
                 </div>
-
-                <button className='button' type='submit'>Login</button>
+                <Link to="/grouppage">
+                    <button className='button' type='submit'>Login</button>
+                </Link>
 
                 <div className="register-link">
                     <p>Don't have an account? <Link to="/register">Register here!</Link></p>
