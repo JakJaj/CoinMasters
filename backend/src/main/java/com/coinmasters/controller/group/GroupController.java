@@ -20,6 +20,7 @@ public class GroupController {
      * You will get details about every user that is a part of a group including the user that is calling this function
      */
     @GetMapping("/{groupID}/users")
+    @CrossOrigin
     public ResponseEntity<GroupUsersResponse> getAllUsersFromGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.getAllUsersFromGroup(groupID, token));
     }
@@ -31,6 +32,7 @@ public class GroupController {
      * @return Response that is using schema {@link  JoinGroupResponse}. You will get details about whether the user was added, and if it was successful, then you will also get data about the group that the user joined.
      */
     @PostMapping("/users")
+    @CrossOrigin
     public ResponseEntity<JoinGroupResponse> joinGroupUsingCode(@RequestBody JoinGroupRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.joinGroup(request, token));
     }
@@ -43,6 +45,7 @@ public class GroupController {
      * @return Response that is using schema {@link  CreateGroupResponse}. You will get details about a database that was created.
      */
     @PostMapping("")
+    @CrossOrigin
     public ResponseEntity<CreateGroupResponse> createGroup(@RequestBody CreateGroupRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.createGroup(request, token));
     }
@@ -54,6 +57,7 @@ public class GroupController {
      * @return Response that is using schema {@link DeleteGroupResponse}. You will get status about a group being deleted or not.
      */
     @DeleteMapping("/{groupID}")
+    @CrossOrigin
     public ResponseEntity<DeleteGroupResponse> deleteGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.deleteGroup(groupID, token));
     }
@@ -65,6 +69,7 @@ public class GroupController {
      * @return Response using {@link RemoveUserResponse} schema. That contains status and message about the process.
      */
     @DeleteMapping("/{groupID}/users")
+    @CrossOrigin
     public ResponseEntity<RemoveUserResponse> removeSelfFromGroup(@PathVariable Long groupID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.removeSelfFromGroup( groupID, token));
     }
@@ -77,6 +82,7 @@ public class GroupController {
      * @return Response using {@link RemoveUserResponse} schema. That contains status and message about the process.
      */
     @DeleteMapping("/{groupID}/users/{userID}")
+    @CrossOrigin
     public ResponseEntity<RemoveUserResponse> removeUserFromGroup(@PathVariable Long groupID, @PathVariable Long userID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(groupService.removeUserFromGroup(groupID,userID,token));
     }
@@ -91,6 +97,7 @@ public class GroupController {
      * @return Response using {@link ChangeGroupDetailsResponse} schema. That contains status, message and new group details.
      */
     @PatchMapping("/{groupID}")
+    @CrossOrigin
     private ResponseEntity<ChangeGroupDetailsResponse> changeGroupDetails(@PathVariable Long groupID, @RequestHeader("Authorization") String token, @RequestBody ChangeGroupDetailsRequest request){
         return ResponseEntity.ok(groupService.changeGroupDetails(groupID, request, token));
     }

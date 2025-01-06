@@ -23,6 +23,7 @@ public class TransactionController {
      * @return a list of transactions from a specified group with details
      */
     @GetMapping("/groups/{groupID}")
+    @CrossOrigin
     public ResponseEntity<GroupTransactionResponse> getGroupsTransactions(@PathVariable Long groupID){
         return ResponseEntity.ok(transactionService.getTransactionOfGroup(groupID));
     }
@@ -33,6 +34,7 @@ public class TransactionController {
      * @return transaction details such as id, name, category, date and creator name
      */
     @GetMapping("/{transactionID}")
+    @CrossOrigin
     public ResponseEntity<TransactionDTO> getTransactionDetails(@PathVariable Long transactionID){
         return ResponseEntity.ok(transactionService.getTransactionDetails(transactionID));
     }
@@ -44,6 +46,7 @@ public class TransactionController {
      * @return created transaction details 
      */
     @PostMapping("")
+    @CrossOrigin
     public ResponseEntity<TransactionDTO> addNewTransaction(@RequestBody TransactionAddRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(transactionService.addTransaction(request, token));
     }
@@ -57,6 +60,7 @@ public class TransactionController {
      * @return response following {@link DeleteTransactionResponse} schema. Containing status about deletion of a transaction process.
      */
     @DeleteMapping("/{transactionID}")
+    @CrossOrigin
     public ResponseEntity<DeleteTransactionResponse> deleteTransaction(@PathVariable Long transactionID, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(transactionService.deleteTransaction(transactionID, token));
     }
@@ -74,6 +78,7 @@ public class TransactionController {
      * That contains status, message and new transaction details.
      */
     @PatchMapping("/{transactionID}")
+    @CrossOrigin
     public ResponseEntity<ChangeTransactionDetailsResponse> changeTransactionDetails(@PathVariable Long transactionID, @RequestBody ChangeTransactionDetailsRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(transactionService.changeTransactionDetails(transactionID, request, token));
     }
