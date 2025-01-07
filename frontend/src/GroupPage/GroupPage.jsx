@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./GroupPage.css";
 import { Link } from "react-router-dom";
 import { fetchGroups } from "../data/groups/getData";
+import GroupModal from "../modal/GroupModal";
 
 const GroupPage = () => {
     const [groups, setGroups] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const getGroups = async () => {
@@ -19,26 +21,12 @@ const GroupPage = () => {
         getGroups();
     }, []);
 
-    const addGroup = () => {
-        const newId = Date.now().toString();
-
-        setGroups([...groups, { id: newId, name: "Nowa Grupa" }]);
-    };
-
     return (
         <div className="group-wrapper">
-            {groups.map((group, index) => (
-                <div className="group" key={index}>
-                    <div className="group-id">{group.id}</div>
-                    <div className="group-name">{group.name}</div>
-                    <Link to="/dashboard">
-                        <button className="group-btn">SELECT</button>
-                    </Link>
-                </div>
-            ))}
-            <div className="add-card" onClick={addGroup}>
+            <div className="add-card" onClick={() => setIsModalOpen(true)}>
                 +
             </div>
+            <GroupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>
     );
 };
