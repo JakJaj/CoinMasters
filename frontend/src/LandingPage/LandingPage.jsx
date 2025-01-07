@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './LandingPage.css';
+import { getData } from '../data/users/getData';
 
 export const LandingPage = () => {
+
+    useEffect(() => {
+        const temporary = async () => {
+            const data = await getData();
+
+        }
+        temporary();
+    })
+
     return (
         <div className='landing-wrapper'>
             <div>

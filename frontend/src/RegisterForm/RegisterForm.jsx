@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import './RegisterForm.css';
 import { FaUserCircle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { registerUser } from '../data/auth/postData';
 
 export const RegisterForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [userName, setUsername] = useState('');
+    const [email, setEmail] = useState('');
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
@@ -42,11 +45,26 @@ export const RegisterForm = () => {
         return errorMessages.length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (validatePassword()) {
-            alert('Registration successful!');
+        const userData = {
+            name: userName,
+            password: password,
+            email: email
+        }
+        try {
+            const response = await registerUser(userData)
+
+            console.log(response);
+
+            if (response.token) { }
+            else {
+                alert(response.message); //TODO: Display the error message
+            }
+        }
+        catch (error) {
+            console.log(error);
         }
     };
 
@@ -54,10 +72,17 @@ export const RegisterForm = () => {
         <div className='wrapper'>
             <form onSubmit={handleSubmit}>
                 <h1>Register</h1>
+
                 <div className='input-box'>
-                    <input type="text" placeholder='Username' /*required*/ />
+                    <input type="text" placeholder='Username' onChange={(e) => setUsername(e.target.value)} value={userName} /*required*/ />
                     <FaUserCircle className='icon' />
                 </div>
+
+                <div className='input-box'>
+                    <input type="text" placeholder='Email' onChange={(e) => setEmail(e.target.value)} value={email} /*required*/ />
+                    <FaUserCircle className='icon' />
+                </div>
+
                 <div className='input-box'>
                     <input
                         type={showPassword ? "text" : "password"}
@@ -72,6 +97,7 @@ export const RegisterForm = () => {
                         <FaEye className='icon' onClick={togglePasswordVisibility} />
                     )}
                 </div>
+
                 <div className='input-box'>
                     <input
                         type={showPassword ? "text" : "password"}
@@ -87,7 +113,7 @@ export const RegisterForm = () => {
                     )}
                 </div>
                 <Link to="/grouppage">
-                    <button className='button' type='submit'>Register</button>
+                    <button className='button' onClick={handleSubmit} type='submit'>Register</button>
                 </Link>
 
                 {errors.length > 0 && (
