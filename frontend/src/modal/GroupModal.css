@@ -16,13 +16,13 @@
     padding: 30px;
     background-color: #fdfdfd;
     border-radius: 5px;
-    box-shadow: 0px 15px 10px -15px #111;
+    box-shadow: 0 15px 10px -15px #404040;
     text-align: center;
 }
 
 .tabs {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     margin-bottom: 20px;
 }
 
@@ -44,28 +44,23 @@
     background-color: #f1f1f1;
 }
 
-.input-box {
-    position: relative;
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    text-align: left;
+}
+
+.form-container input,
+.form-container select {
     height: 40px;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.input-box input {
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    border: 2px solid #000000;
-    border-radius: 40px;
-    padding: 20px 45px 20px 20px;
+    padding: 10px;
+    border: 2px solid #404040;
+    border-radius: 5px;
     outline: none;
-}
-
-.input-box .icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
 .modal-buttons {
@@ -76,22 +71,25 @@
 
 .modal-buttons button {
     background-color: #45a049;
-    color: #fff;
+    color: #f1f1f1;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    flex-grow: 1;
+    margin: 0 5px;
 }
 
-.modal-buttons button:hover {
-    background-color: #3e8e41;
+.modal-buttons button:first-child {
+    margin-left: 0;
 }
 
 .modal-buttons button:last-child {
     background-color: #d9534f;
+    margin-right: 0;
 }
 
-.modal-buttons button:last-child:hover {
-    background-color: #c9302c;
+.modal-buttons button:hover {
+    filter: brightness(0.9);
 }

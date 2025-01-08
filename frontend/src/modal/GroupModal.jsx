@@ -50,10 +50,18 @@ const GroupModal = ({ isOpen, onClose }) => {
                         />
                         <input
                             type="text"
-                            placeholder="Opis grupy"
+                            placeholder="Cel grupy"
                             value={input2}
                             onChange={(e) => setInput2(e.target.value)}
                         />
+                        <select id="wybierz walute">
+                            <option value="" disabled selected>-- Wybierz walutę --</option>
+                            <option value="PLN">PLN</option>
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
+                            <option value="GBP">GBP</option>
+                            <option value="JPY">JPY</option>
+                        </select>
                     </div>
                 ) : (
                     <div className="form-container">
