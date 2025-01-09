@@ -2,12 +2,23 @@ import React from "react";
 import "./GroupModal.css";
 import { createGroup } from "../data/groups/postData";
 
-const GroupModal = ({ isOpen, onClose }) => {
+const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
     const [groupName, setGroupName] = React.useState("");
     const [goal, setGoal] = React.useState("");
     const [currency, setCurrency] = React.useState("");
     const [joinCode, setJoinCode] = React.useState("");
     const [activeTab, setActiveTab] = React.useState("createGroup");
+
+    React.useEffect(() => {
+        const resetForm = () => {
+            setGroupName("");
+            setGoal("");
+            setCurrency("");
+            setJoinCode("");
+        };
+
+        return resetForm;
+    }, [isOpen]);
 
     if (!isOpen) {
         return null;
@@ -34,6 +45,7 @@ const GroupModal = ({ isOpen, onClose }) => {
             if (response) {
                 alert(`Group created successfully! Join code: ${response.joinCode}`);
                 onClose();
+                onGroupCreated();
             }
         } else if (activeTab === "joinGroup") {
             if (!joinCode) {
@@ -41,7 +53,6 @@ const GroupModal = ({ isOpen, onClose }) => {
                 return;
             }
 
-            // TODO: Handle join group functionality
             alert(`Joining group with code: ${joinCode}`);
         }
     };
@@ -49,7 +60,6 @@ const GroupModal = ({ isOpen, onClose }) => {
     return (
         <div className="modal-overlay" onClick={() => onClose()}>
             <div className="modal-content" onClick={(event) => event.stopPropagation()}>
-
                 <div className="tabs">
                     <button
                         className={activeTab === "createGroup" ? "active" : ""}
@@ -57,7 +67,6 @@ const GroupModal = ({ isOpen, onClose }) => {
                     >
                         Stwórz grupę
                     </button>
-
                     <button
                         className={activeTab === "joinGroup" ? "active" : ""}
                         onClick={() => handleTabChange("joinGroup")}
@@ -80,10 +89,7 @@ const GroupModal = ({ isOpen, onClose }) => {
                             value={goal}
                             onChange={(e) => setGoal(e.target.value)}
                         />
-                        <select
-                            value={currency}
-                            onChange={(e) => setCurrency(e.target.value)}
-                        >
+                        <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
                             <option value="" disabled>-- Wybierz walutę --</option>
                             <option value="PLN">PLN</option>
                             <option value="EUR">EUR</option>

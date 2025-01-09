@@ -16,7 +16,7 @@ export const fetchGroups = async () => {
         });
         if (response.ok) {
             const result = await response.json();
-            //return result;
+            return result.userGroups;
             console.log(result);
         }
         return;
