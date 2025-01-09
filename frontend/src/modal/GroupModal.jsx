@@ -1,6 +1,6 @@
 import React from "react";
 import "./GroupModal.css";
-import { createGroup } from "../data/groups/postData";
+import { createGroup, joinGroup } from "../data/groups/postData";
 
 const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
     const [groupName, setGroupName] = React.useState("");
@@ -53,7 +53,12 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
                 return;
             }
 
-            alert(`Joining group with code: ${joinCode}`);
+            const response = await joinGroup(joinCode);
+            if (response) {
+                alert(`Successfully joined group: ${response.group.groupName}`);
+                onClose();
+                onGroupCreated();
+            }
         }
     };
 

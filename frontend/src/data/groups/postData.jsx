@@ -27,3 +27,28 @@ export const createGroup = async (groupData) => {
         console.error(error);
     }
 };
+
+export const joinGroup = async (joinCode) => {
+    try {
+        const response = await fetch(`${url}/groups/users`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${Cookies.get("token")}`,
+            },
+            body: JSON.stringify(joinCode),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result);
+            return result;
+        } else {
+            const error = await response.json();
+            console.error("Error joining group:", error);
+            alert(error.message || "Failed to join group");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
