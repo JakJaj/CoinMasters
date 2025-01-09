@@ -1,9 +1,12 @@
 import React from "react";
 import "./GroupModal.css";
+import { createGroup } from "../data/groups/postData";
 
 const GroupModal = ({ isOpen, onClose }) => {
-    const [input1, setInput1] = React.useState("");
-    const [input2, setInput2] = React.useState("");
+    const [groupName, setGroupName] = React.useState("");
+    const [goal, setGoal] = React.useState("");
+    const [currency, setCurrency] = React.useState("");
+    const [joinCode, setJoinCode] = React.useState("");
     const [activeTab, setActiveTab] = React.useState("createGroup");
 
     if (!isOpen) {
@@ -14,14 +17,37 @@ const GroupModal = ({ isOpen, onClose }) => {
         setActiveTab(tab);
     };
 
-    return (
-        <div className="modal-overlay" onClick={() => {
-            setInput1("");
-            setInput2("");
-            setActiveTab("createGroup");
-            onClose();
+    const handleSave = async () => {
+        if (activeTab === "createGroup") {
+            if (!groupName || !goal || !currency) {
+                alert("Please fill in all fields");
+                return;
+            }
+
+            const groupData = {
+                groupName: groupName,
+                goal: goal,
+                currency: currency,
+            };
+
+            const response = await createGroup(groupData);
+            if (response) {
+                alert(`Group created successfully! Join code: ${response.joinCode}`);
+                onClose();
+            }
+        } else if (activeTab === "joinGroup") {
+            if (!joinCode) {
+                alert("Please enter a join code");
+                return;
+            }
+
+            // TODO: Handle join group functionality
+            alert(`Joining group with code: ${joinCode}`);
         }
-        }>
+    };
+
+    return (
+        <div className="modal-overlay" onClick={() => onClose()}>
             <div className="modal-content" onClick={(event) => event.stopPropagation()}>
 
                 <div className="tabs">
@@ -45,17 +71,20 @@ const GroupModal = ({ isOpen, onClose }) => {
                         <input
                             type="text"
                             placeholder="Nazwa grupy"
-                            value={input1}
-                            onChange={(e) => setInput1(e.target.value)}
+                            value={groupName}
+                            onChange={(e) => setGroupName(e.target.value)}
                         />
                         <input
                             type="text"
                             placeholder="Cel grupy"
-                            value={input2}
-                            onChange={(e) => setInput2(e.target.value)}
+                            value={goal}
+                            onChange={(e) => setGoal(e.target.value)}
                         />
-                        <select id="wybierz walute">
-                            <option value="" disabled selected>-- Wybierz walutę --</option>
+                        <select
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
+                        >
+                            <option value="" disabled>-- Wybierz walutę --</option>
                             <option value="PLN">PLN</option>
                             <option value="EUR">EUR</option>
                             <option value="USD">USD</option>
@@ -68,20 +97,15 @@ const GroupModal = ({ isOpen, onClose }) => {
                         <input
                             type="text"
                             placeholder="Kod grupy"
-                            value={input1}
-                            onChange={(e) => setInput1(e.target.value)}
+                            value={joinCode}
+                            onChange={(e) => setJoinCode(e.target.value)}
                         />
                     </div>
                 )}
 
                 <div className="modal-buttons">
-                    <button onClick={() => alert("Kliknięto Save!")}>Save</button>
-                    <button onClick={() => {
-                        setInput1("");
-                        setInput2("");
-                        setActiveTab("createGroup");
-                        onClose();
-                    }}>Close</button>
+                    <button onClick={handleSave}>Save</button>
+                    <button onClick={() => onClose()}>Close</button>
                 </div>
             </div>
         </div>
