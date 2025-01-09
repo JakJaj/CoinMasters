@@ -3,6 +3,7 @@ import './RegisterForm.css';
 import { FaUserCircle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { registerUser } from '../data/auth/postData';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
     const [password, setPassword] = useState('');
@@ -11,6 +12,7 @@ export const RegisterForm = () => {
     const [errors, setErrors] = useState([]);
     const [userName, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
@@ -58,7 +60,9 @@ export const RegisterForm = () => {
 
             console.log(response);
 
-            if (response.token) { }
+            if (response.token) {
+                navigate('/grouppage');
+            }
             else {
                 alert(response.message); //TODO: Display the error message
             }

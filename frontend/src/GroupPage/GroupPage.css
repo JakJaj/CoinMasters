@@ -1,14 +1,13 @@
 .group-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: minmax(150px, auto);
     gap: 20px;
     padding: 20px;
 }
 
 .group,
 .add-card {
-    width: 100%;
-    height: 150px;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 12px;
@@ -73,7 +72,6 @@
     background-color: #3e8e41;
 }
 
-/* Responsiveness */
 @media (max-width: 768px) {
     .group-wrapper {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -82,7 +80,6 @@
 
     .group,
     .add-card {
-        height: 120px;
         padding: 15px;
     }
 
@@ -107,7 +104,6 @@
 
     .group,
     .add-card {
-        height: 100px;
         padding: 10px;
     }
 
