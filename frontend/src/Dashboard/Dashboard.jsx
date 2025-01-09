@@ -12,6 +12,9 @@ const Dashboard = () => {
     const [groupUsers, setGroupUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [transactions, setTransactions] = useState([]);
+    const [depositSum, setDepositSum] = useState(0);
+    const [withdrawalSum, setWithdrawalSum] = useState(0);
+    const [balance, setBalance] = useState(0);
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -25,7 +28,6 @@ const Dashboard = () => {
                 try {
                     const users = await fetchGroupUsers(group.groupId);
                     setGroupUsers(users);
-                    console.log("Fetched group users:", users);
                 } catch (error) {
                     console.error("Błąd przy pobieraniu członków grupy:", error);
                 }
@@ -36,17 +38,22 @@ const Dashboard = () => {
 
     const fetchTransactions = async () => {
         try {
-            console.log("Fetching transactions for groupId:", groupId);
+            if (!groupId) return;
 
             const transactionList = await getGroupTransactions(groupId);
-            console.log("Fetched transaction list:", transactionList);
+            if (!transactionList) return;
 
             const transactionDetails = await Promise.all(
-                transactionList.map((transaction) =>
-                    getGroupTransactionsDetails(transaction.transactionId)
-                )
+                transactionList.map(async (transaction) => {
+                    try {
+                        const details = await getGroupTransactionsDetails(transaction.transactionId);
+                        return { ...transaction, ...details };
+                    } catch (detailError) {
+                        console.error(`Błąd pobierania szczegółów transakcji ${transaction.transactionId}:`, detailError);
+                        return transaction;
+                    }
+                })
             );
-            console.log("Fetched transaction details:", transactionDetails);
 
             setTransactions(transactionDetails);
         } catch (error) {
@@ -54,12 +61,29 @@ const Dashboard = () => {
         }
     };
 
+    const calculateSums = (transactions) => {
+        let currentDepositSum = 0;
+        let currentWithdrawalSum = 0;
+
+        transactions.forEach((transaction) => {
+            if (transaction && transaction.amount) {
+                if (transaction.amount >= 0) {
+                    currentDepositSum += transaction.amount;
+                } else {
+                    currentWithdrawalSum += transaction.amount;
+                }
+            }
+        });
+
+        setDepositSum(currentDepositSum);
+        setWithdrawalSum(currentWithdrawalSum);
+        setBalance(currentDepositSum + currentWithdrawalSum);
+    };
+
     const handleDelete = async (transactionId) => {
         try {
-            console.log(`Usuwanie transakcji o ID: ${transactionId}`);
             const result = await deleteTransactionData(transactionId);
-
-            if (result.status === 'success') {
+            if (result && result.status === 'success') {
                 alert(result.message);
                 fetchTransactions();
             } else {
@@ -67,13 +91,18 @@ const Dashboard = () => {
             }
         } catch (error) {
             console.error('Błąd przy usuwaniu transakcji:', error);
-            setError('Nie udało się usunąć transakcji. Spróbuj ponownie później.');
         }
     };
 
     useEffect(() => {
-        fetchTransactions();
+        if (groupId) {
+            fetchTransactions();
+        }
     }, [groupId]);
+
+    useEffect(() => {
+        calculateSums(transactions);
+    }, [transactions]);
 
     return (
         <div className="dashboard">
@@ -92,26 +121,23 @@ const Dashboard = () => {
             <div className="main-content">
                 <div className="card">
                     <div className="card-title">Wpłaty SUM</div>
-                    <div className="card-value">123,58 PLN</div>
-                    <div className="chart-placeholder">wykres</div>
+                    <div className="card-value">{depositSum} {currency}</div>
                 </div>
 
                 <div className="card">
                     <div className="card-title">Zaoszczędzone / stracone</div>
-                    <div className="card-value negative">-90,81 PLN</div>
+                    <div className={`card-value ${balance >= 0 ? '' : 'negative'}`}>
+                        {balance} {currency}
+                    </div>
                 </div>
 
                 <div className="card">
                     <div className="card-title">Wypłaty SUM</div>
-                    <div className="card-value">123,58 PLN</div>
-                    <div className="chart-placeholder">wykres</div>
+                    <div className="card-value negative">{withdrawalSum} {currency}</div>
                 </div>
 
                 <div className="transactions">
-                    <button
-                        className="add-transaction-btn"
-                        onClick={() => setIsModalOpen(true)}
-                    >
+                    <button className="add-transaction-btn" onClick={() => setIsModalOpen(true)}>
                         Dodaj nową transakcję
                     </button>
 
@@ -122,36 +148,29 @@ const Dashboard = () => {
                                     <span>{transaction.name}</span>
                                     <span>{transaction.category}</span>
                                     <span>{transaction.date}</span>
-                                    <span>{transaction.amount} PLN</span>
+                                    <span>{transaction.amount} {currency}</span>
                                     <span>Utworzył: {transaction.creatorName}</span>
                                 </div>
-                                <button
-                                    className="delete-button"
-                                    onClick={() => handleDelete(transaction.transactionId)}
-                                >
+                                <button className="delete-button" onClick={() => handleDelete(transaction.transactionId)}>
                                     X
                                 </button>
                             </div>
                         ))}
                     </div>
-
-
                 </div>
             </div>
 
             <div className="sidebar">
                 <div className="savings-goal">
                     <div className="goal-title">Cel oszczędzania: {goal} <br /> (pozostało)</div>
-                    <div className="goal-value">11 918,06 PLN</div>
+                    <div className="goal-value">11 918,06 {currency}</div>
                 </div>
 
                 <div className="members-list">
                     <span>Członkowie grupy:</span>
                     <ul>
                         {groupUsers.map((user) => (
-                            <li key={user.userId}>
-                                {user.name}
-                            </li>
+                            <li key={user.userId}>{user.name}</li>
                         ))}
                     </ul>
                 </div>
