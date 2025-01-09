@@ -4,6 +4,7 @@ import { Link, useLocation, Navigate } from "react-router-dom";
 import { fetchGroupUsers } from "../data/groups/getData";
 import { getGroupTransactions, getGroupTransactionsDetails } from "../data/transactions/getData";
 import TransactionModal from "../modal/TransactionModal";
+import { deleteTransactionData } from "../data/transactions/deleteData";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -53,11 +54,22 @@ const Dashboard = () => {
         }
     };
 
-    const handleDelete = (transactionId) => {
-        console.log(`Usuwanie transakcji o ID: ${transactionId}`);
-        //TODO: Implement delete transaction
-    };
+    const handleDelete = async (transactionId) => {
+        try {
+            console.log(`Usuwanie transakcji o ID: ${transactionId}`);
+            const result = await deleteTransactionData(transactionId);
 
+            if (result.status === 'success') {
+                alert(result.message);
+                fetchTransactions();
+            } else {
+                alert("Nie udało się usunąć transakcji.");
+            }
+        } catch (error) {
+            console.error('Błąd przy usuwaniu transakcji:', error);
+            setError('Nie udało się usunąć transakcji. Spróbuj ponownie później.');
+        }
+    };
 
     useEffect(() => {
         fetchTransactions();
