@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./GroupPage.css";
 import { fetchGroups } from "../data/groups/getData";
 import GroupModal from "../modal/GroupModal";
+import { useNavigate } from 'react-router-dom';
 
 const GroupPage = () => {
     const [groups, setGroups] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     const refreshGroups = async () => {
         try {
@@ -31,7 +33,11 @@ const GroupPage = () => {
                     <h3>{group.groupName}</h3>
                     <p>{group.goal}</p>
                     <p><strong>Waluta:</strong> {group.currency}</p>
-                    <button className="group-btn">Otwórz</button>
+                    <button
+                        onClick={() => navigate('/dashboard', {
+                            state: { group }
+                        })}
+                        className="group-btn">Otwórz</button>
                 </div>
             ))}
 

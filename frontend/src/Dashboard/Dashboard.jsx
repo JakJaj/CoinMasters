@@ -1,16 +1,29 @@
 import React from "react";
 import "./Dashboard.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Dashboard = () => {
+    const location = useLocation();
+    const { group } = location.state || {};
+
+    if (!group) {
+        return <Navigate to="/grouppage" replace />;
+    }
+
+    const { groupName, currency, goal, groupId } = group;
+
+    if (!group) {
+        return <div>Brak danych o grupie.</div>;
+    }
+
     return (
         <div className="dashboard">
             <div className="header">
                 <Link to="/grouppage">
                     <button className="back-btn">BACK</button>
                 </Link>
-                <div className="group-name">NAZWA GRUPY</div>
-                <div className="currency">WALUTA</div>
+                <div className="group-name">Nazwa grupy: {groupName}</div>
+                <div className="currency">Waluta: {currency}</div>
                 <div className="username">USERNAME</div>
                 <Link to="/login">
                     <button className="logout-btn">LOGOUT</button>
@@ -65,7 +78,7 @@ const Dashboard = () => {
 
             <div className="sidebar">
                 <div className="savings-goal">
-                    <div className="goal-title">Cel oszczędzania (pozostało)</div>
+                    <div className="goal-title">Cel oszczędzania: {goal} <br /> (pozostało)</div>
                     <div className="goal-value">11 918,06 PLN</div>
                 </div>
                 <div className="access-code">
