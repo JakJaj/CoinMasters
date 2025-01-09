@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { Link, useLocation } from "react-router-dom";
+import { fetchGroupUsers } from "../data/groups/getData";
 
 const Dashboard = () => {
     const location = useLocation();
     const { group } = location.state || {};
+    const [groupUsers, setGroupUsers] = useState([]);
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -12,12 +14,25 @@ const Dashboard = () => {
 
     const { groupName, currency, goal, groupId } = group;
 
-    if (!group) {
-        return <div>Brak danych o grupie.</div>;
-    }
+    useEffect(() => {
+        if (group) {
+            const getUsers = async () => {
+                try {
+                    const users = await fetchGroupUsers(group.groupId);
+                    setGroupUsers(users);
+                    setLoading(false);
+                } catch (error) {
+                    console.error("Błąd przy pobieraniu członków grupy:", error);
+                    setLoading(false);
+                }
+            };
+            getUsers();
+        }
+    }, [group]);
 
     return (
         <div className="dashboard">
+
             <div className="header">
                 <Link to="/grouppage">
                     <button className="back-btn">BACK</button>
@@ -31,6 +46,7 @@ const Dashboard = () => {
             </div>
 
             <div className="main-content">
+
                 <div className="card">
                     <div className="card-title">Wpłaty SUM</div>
                     <div className="card-value">123,58 PLN</div>
@@ -51,6 +67,7 @@ const Dashboard = () => {
                 <div className="transactions">
                     <button className="add-transaction-btn">Dodaj nowa</button>
                     <div className="transaction-list">
+
                         <div className="transaction-item">
                             <span>Transakcja 1</span>
                             <div className="transaction-actions">
@@ -58,6 +75,7 @@ const Dashboard = () => {
                                 <button className="delete-btn">usun</button>
                             </div>
                         </div>
+
                         <div className="transaction-item">
                             <span>Transakcja 2</span>
                             <div className="transaction-actions">
@@ -65,6 +83,7 @@ const Dashboard = () => {
                                 <button className="delete-btn">usun</button>
                             </div>
                         </div>
+
                         <div className="transaction-item">
                             <span>Transakcja 3</span>
                             <div className="transaction-actions">
@@ -72,27 +91,37 @@ const Dashboard = () => {
                                 <button className="delete-btn">usun</button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
 
             <div className="sidebar">
+
                 <div className="savings-goal">
                     <div className="goal-title">Cel oszczędzania: {goal} <br /> (pozostało)</div>
                     <div className="goal-value">11 918,06 PLN</div>
                 </div>
+
+                <div className="members-list">
+                    <span>Członkowie grupy:</span>
+                    <ul>
+                        {groupUsers.map((user) => (
+                            <li key={user.userId}>
+                                {user.name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
                 <div className="access-code">
                     <span>Kod dostępu</span>
                 </div>
+
                 <div className="calendar">
                     <span>kalendarzyk</span>
                 </div>
-                <div className="notes">
-                    <span>a ________</span>
-                    <span>b ________</span>
-                    <span>c ________</span>
-                    <span>d ________</span>
-                </div>
+
             </div>
         </div>
     );
