@@ -8,6 +8,7 @@ import { deleteTransactionData } from "../data/transactions/deleteData";
 import EditTransactionModal from "../modal/EditTransactionModal";
 import { deleteGroupData } from "../data/groups/deleteData";
 import { deleteSelfFromGroup } from "../data/users/deleteData";
+import { getUserDetails } from "../data/users/getData";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -21,6 +22,7 @@ const Dashboard = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [transactionToEdit, setTransactionToEdit] = useState(null);
     const [selectedAction, setSelectedAction] = useState("");
+    const [userName, setUserName] = useState("");
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -41,6 +43,20 @@ const Dashboard = () => {
             getUsers();
         }
     }, [group]);
+
+    useEffect(() => {
+        console.log(userName)
+        const fetchUser = async () => {
+            try {
+                const userDetails = await getUserDetails();
+                setUserName(userDetails.name);
+            } catch (error) {
+                console.error("Błąd przy pobieraniu danych użytkownika:", error);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const fetchTransactions = async () => {
         try {
@@ -176,7 +192,7 @@ const Dashboard = () => {
                 </Link>
                 <div className="group-name">Nazwa grupy: {groupName}</div>
                 <div className="currency">Waluta: {currency}</div>
-                <div className="username">USERNAME</div>
+                <div className="username">USERNAME: {userName}</div>
 
                 <select
                     className="group-actions-dropdown"
