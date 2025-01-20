@@ -5,6 +5,7 @@ import { fetchGroupUsers } from "../data/groups/getData";
 import { getGroupTransactions, getGroupTransactionsDetails } from "../data/transactions/getData";
 import TransactionModal from "../modal/TransactionModal";
 import { deleteTransactionData } from "../data/transactions/deleteData";
+import EditTransactionModal from "../modal/EditTransactionModal";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -15,6 +16,9 @@ const Dashboard = () => {
     const [depositSum, setDepositSum] = useState(0);
     const [withdrawalSum, setWithdrawalSum] = useState(0);
     const [balance, setBalance] = useState(0);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [transactionToEdit, setTransactionToEdit] = useState(null);
+
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -94,6 +98,17 @@ const Dashboard = () => {
         }
     };
 
+    const handleEdit = (transaction) => {
+        setTransactionToEdit(transaction);
+        setIsEditModalOpen(true);
+    };
+
+    const closeEditModal = () => {
+        setTransactionToEdit(null);
+        setIsEditModalOpen(false);
+    };
+
+
     useEffect(() => {
         if (groupId) {
             fetchTransactions();
@@ -151,9 +166,15 @@ const Dashboard = () => {
                                     <span>{transaction.amount} {currency}</span>
                                     <span>Utworzył: {transaction.creatorName}</span>
                                 </div>
-                                <button className="delete-button" onClick={() => handleDelete(transaction.transactionId)}>
-                                    X
-                                </button>
+                                <div className="transaction-actions">
+                                    <button className="edit-button" onClick={() => handleEdit(transaction)}>
+                                        ✎
+                                    </button>
+                                    <button className="delete-button" onClick={() => handleDelete(transaction.transactionId)}>
+                                        X
+                                    </button>
+                                </div>
+
                             </div>
                         ))}
                     </div>
@@ -192,6 +213,16 @@ const Dashboard = () => {
                     onTransactionCreated={fetchTransactions}
                 />
             )}
+
+            {isEditModalOpen && (
+                <EditTransactionModal
+                    isOpen={isEditModalOpen}
+                    onClose={closeEditModal}
+                    transactionToEdit={transactionToEdit}
+                    onTransactionUpdated={fetchTransactions}
+                />
+            )}
+
         </div>
     );
 };
