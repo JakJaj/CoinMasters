@@ -199,8 +199,16 @@ public class GroupService {
                 .map(UserGroup::getUser)
                 .collect(Collectors.toSet());
 
+
         List<UserDetailsResponse> users = groupUsers.stream()
-                .map(u -> new UserDetailsResponse(u.getUserId(), u.getName(), u.getEmail(), u.getRolee().toString()))
+                .map(u -> {
+                    Optional<Set<Group>> adminOfGroupsOptional = groupRepository.getGroupsByAdminUserId_UserId(u.getUserId());
+                    Set<Long> adminOfGroups = adminOfGroupsOptional.map(groups -> groups.stream()
+                                    .map(Group::getGroupId)
+                                    .collect(Collectors.toSet()))
+                            .orElse(Set.of());
+                    return new UserDetailsResponse(u.getUserId(), adminOfGroups, u.getName(), u.getEmail(), u.getRolee().toString());
+                })
                 .toList();
 
         return GroupUsersResponse.builder()
