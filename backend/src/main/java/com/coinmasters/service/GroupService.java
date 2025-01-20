@@ -119,6 +119,7 @@ public class GroupService {
                 .build();
     }
 
+    @Transactional
     public DeleteGroupResponse deleteGroup(Long groupID, String token) {
 
         String email = jwtService.extractUsername(token.substring(7));
@@ -127,6 +128,8 @@ public class GroupService {
         Group group = groupRepository.getGroupByGroupId(groupID).orElseThrow(() -> new NoSuchGroupException(String.format("No group with id - %s", groupID)));
 
         if (group.getAdminUserId().getUserId().longValue() == user.getUserId().longValue()){
+            transactionRepository.deleteTransactionsByGroup_GroupId(groupID);
+            userGroupRepository.deleteByGroup_GroupId(groupID);
             groupRepository.delete(group);
             return DeleteGroupResponse.builder()
                     .status("Deleted")
@@ -138,6 +141,7 @@ public class GroupService {
     }
 
 
+    @Transactional
     public ChangeGroupDetailsResponse changeGroupDetails(Long groupID, ChangeGroupDetailsRequest request, String token) {
 
         String email = jwtService.extractUsername(token.substring(7));

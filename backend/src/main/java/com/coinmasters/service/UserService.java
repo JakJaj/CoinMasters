@@ -8,6 +8,7 @@ import com.coinmasters.dto.GroupDTO;
 import com.coinmasters.entity.User;
 import com.coinmasters.exceptions.IncorrectPasswordException;
 import com.coinmasters.exceptions.NoSuchUserException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,7 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchUserException("This should never happen. If it did then, like, damn..."));
     }
 
+    @Transactional
     public ChangePasswordResponse changePassword(ChangePasswordRequest request, String token) {
 
         String email = jwtService.extractUsername(token.substring(7));
