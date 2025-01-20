@@ -6,6 +6,8 @@ import { getGroupTransactions, getGroupTransactionsDetails } from "../data/trans
 import TransactionModal from "../modal/TransactionModal";
 import { deleteTransactionData } from "../data/transactions/deleteData";
 import EditTransactionModal from "../modal/EditTransactionModal";
+import { deleteGroupData } from "../data/groups/deleteData";
+import { deleteSelfFromGroup } from "../data/users/deleteData";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -18,7 +20,7 @@ const Dashboard = () => {
     const [balance, setBalance] = useState(0);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [transactionToEdit, setTransactionToEdit] = useState(null);
-
+    const [selectedAction, setSelectedAction] = useState("");
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -108,6 +110,53 @@ const Dashboard = () => {
         setIsEditModalOpen(false);
     };
 
+    const handleGroupDelete = async () => {
+        try {
+            const result = await deleteGroupData(groupId);
+            if (result && result.status === 'success') {
+                alert(result.message || "Grupa została usunięta.");
+                window.location.href = "/grouppage";
+            } else {
+                alert(result.message || "Nie udało się usunąć grupy.");
+            }
+        } catch (error) {
+            console.error("Błąd przy usuwaniu grupy:", error);
+            alert("Wystąpił błąd podczas usuwania grupy.");
+        }
+    };
+
+    const handleActionChange = (e) => {
+        const action = e.target.value;
+        setSelectedAction(action);
+
+        if (action === "leave") {
+            if (window.confirm("Czy na pewno chcesz opuścić grupę?")) {
+                handleLeaveGroup();
+            }
+        } else if (action === "delete") {
+            if (window.confirm("Czy na pewno chcesz usunąć grupę?")) {
+                handleGroupDelete();
+            }
+        } else if (action === "edit") {
+            console.log("Edytuję dane grupy");
+        }
+    };
+
+    const handleLeaveGroup = async () => {
+        try {
+            const result = await deleteSelfFromGroup(groupId);
+            if (result && result.status === 'success') {
+                alert(result.message || "Pomyślnie opuściłeś grupę.");
+                window.location.href = "/grouppage";
+            } else {
+                alert(result.message || "Nie udało się opuścić grupy.");
+            }
+        } catch (error) {
+            console.error("Błąd przy opuszczaniu grupy:", error);
+            alert("Wystąpił błąd podczas opuszczania grupy.");
+        }
+    };
+
 
     useEffect(() => {
         if (groupId) {
@@ -128,6 +177,18 @@ const Dashboard = () => {
                 <div className="group-name">Nazwa grupy: {groupName}</div>
                 <div className="currency">Waluta: {currency}</div>
                 <div className="username">USERNAME</div>
+
+                <select
+                    className="group-actions-dropdown"
+                    value={selectedAction}
+                    onChange={handleActionChange}
+                >
+                    <option value="" disabled hidden>Opcje grupy</option>
+                    <option value="leave">Opuść grupę</option>
+                    <option value="delete">Usuń grupę</option>
+                    <option value="edit">Zmień dane</option>
+                </select>
+
                 <Link to="/login">
                     <button className="logout-btn">LOGOUT</button>
                 </Link>
