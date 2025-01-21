@@ -1,0 +1,95 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: 400px;
+    padding: 30px;
+    background-color: #fdfdfd;
+    border-radius: 5px;
+    box-shadow: 0 15px 10px -15px #404040;
+    text-align: center;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tabs button.active {
+    border-bottom: 2px solid #45a049;
+    font-weight: bold;
+}
+
+.tabs button:hover {
+    background-color: #f1f1f1;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    text-align: left;
+}
+
+.form-container input,
+.form-container select {
+    height: 40px;
+    padding: 10px;
+    border: 2px solid #404040;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    background-color: #45a049;
+    color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-grow: 1;
+    margin: 0 5px;
+}
+
+.modal-buttons button:first-child {
+    margin-left: 0;
+}
+
+.modal-buttons button:last-child {
+    background-color: #d9534f;
+    margin-right: 0;
+}
+
+.modal-buttons button:hover {
+    filter: brightness(0.9);
+}

@@ -1,41 +1,53 @@
 .group-wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: minmax(150px, auto);
     gap: 20px;
     padding: 20px;
 }
 
 .group,
 .add-card {
-    width: 200px;
-    height: 150px;
-    background-color: #fdfdfd;
+    background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .group:hover,
 .add-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.group h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.group p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
 }
 
 .group-btn {
+    margin-top: 10px;
     background: #404040;
-    color: #fdfdfd;
+    color: #ffffff;
     border: none;
-    padding: 10px 15px;
+    padding: 10px 20px;
     cursor: pointer;
-    outline: none;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    border-radius: 40px;
+    border-radius: 20px;
     transition: background-color 0.3s ease;
 }
 
@@ -44,15 +56,66 @@
 }
 
 .add-card {
-    font-size: 40px;
-    color: #fdfdfd;
+    font-size: 36px;
+    color: #ffffff;
     background-color: #45a049;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .add-card:hover {
     background-color: #3e8e41;
+}
+
+@media (max-width: 768px) {
+    .group-wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .group,
+    .add-card {
+        padding: 15px;
+    }
+
+    .group h3 {
+        font-size: 16px;
+    }
+
+    .group p {
+        font-size: 12px;
+    }
+
+    .add-card {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .group-wrapper {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .group,
+    .add-card {
+        padding: 10px;
+    }
+
+    .group h3 {
+        font-size: 14px;
+    }
+
+    .group p {
+        font-size: 10px;
+    }
+
+    .add-card {
+        font-size: 24px;
+    }
 }

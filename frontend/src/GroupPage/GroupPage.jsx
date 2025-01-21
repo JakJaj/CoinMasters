@@ -1,29 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./GroupPage.css";
-import { Link } from "react-router-dom";
+import { fetchGroups } from "../data/groups/getData";
+import GroupModal from "../modal/GroupModal";
+import { useNavigate } from 'react-router-dom';
 
 const GroupPage = () => {
     const [groups, setGroups] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const addGroup = () => {
-        const newId = Date.now().toString();
-        setGroups([...groups, { id: newId, name: "Nowa Grupa" }]);
+    const refreshGroups = async () => {
+        try {
+            const response = await fetchGroups();
+            setGroups(response);
+        } catch (error) {
+            console.error("Błąd podczas odświeżania grup:", error);
+        }
     };
+
+    useEffect(() => {
+        refreshGroups();
+    }, []);
 
     return (
         <div className="group-wrapper">
-            {groups.map((group, index) => (
-                <div className="group" key={index}>
-                    <div className="group-id">{group.id}</div>
-                    <div className="group-name">{group.name}</div>
-                    <Link to="/dashboard">
-                        <button className="group-btn">SELECT</button>
-                    </Link>
-                </div>
-            ))}
-            <div className="add-card" onClick={addGroup}>
+            <div className="add-card" onClick={() => setIsModalOpen(true)}>
                 +
             </div>
+
+            {groups.map((group) => (
+                <div key={group.groupId} className="group">
+                    <h3>{group.groupName}</h3>
+                    <p>{group.goal}</p>
+                    <p><strong>Waluta:</strong> {group.currency}</p>
+                    <button
+                        onClick={() => navigate('/dashboard', {
+                            state: { group }
+                        })}
+                        className="group-btn">Otwórz</button>
+                </div>
+            ))}
+
+            <GroupModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onGroupCreated={refreshGroups}
+            />
         </div>
     );
 };
