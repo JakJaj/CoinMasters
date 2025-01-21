@@ -11,6 +11,7 @@ import { deleteSelfFromGroup } from "../data/users/deleteData";
 import { getUserDetails } from "../data/users/getData";
 import { changePassword } from "../data/users/putData";
 import PasswordChangeModal from "../modal/ChangePasswordModal";
+import GroupDetailsEditModal from "../modal/GroudDetailsEditModal";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -26,6 +27,9 @@ const Dashboard = () => {
     const [selectedAction, setSelectedAction] = useState("");
     const [userName, setUserName] = useState("");
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [isGroupDetailsModalOpen, setIsGroupDetailsModalOpen] = useState(false);
+    const [updatedGroupDetails, setUpdatedGroupDetails] = useState({});
+
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -158,11 +162,12 @@ const Dashboard = () => {
                 handleGroupDelete();
             }
         } else if (action === "edit") {
-            console.log("Edytuję dane grupy");
+            setIsGroupDetailsModalOpen(true);
         } else if (action === "password") {
             setIsPasswordModalOpen(true);
         }
     };
+
 
     const handleLeaveGroup = async () => {
         try {
@@ -222,6 +227,20 @@ const Dashboard = () => {
                         }}
                     />
                 )}
+
+                {isGroupDetailsModalOpen && (
+                    <GroupDetailsEditModal
+                        isOpen={isGroupDetailsModalOpen}
+                        onClose={() => setIsGroupDetailsModalOpen(false)}
+                        groupId={groupId}
+                        initialGroupDetails={updatedGroupDetails}
+                        onGroupDetailsUpdated={(newDetails) => {
+                            setUpdatedGroupDetails(newDetails);
+                            alert("Group details have been updated.");
+                        }}
+                    />
+                )}
+
 
                 <Link to="/login">
                     <button className="logout-btn">LOGOUT</button>
