@@ -9,6 +9,8 @@ import EditTransactionModal from "../modal/EditTransactionModal";
 import { deleteGroupData } from "../data/groups/deleteData";
 import { deleteSelfFromGroup } from "../data/users/deleteData";
 import { getUserDetails } from "../data/users/getData";
+import { changePassword } from "../data/users/putData";
+import PasswordChangeModal from "../modal/ChangePasswordModal";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -23,6 +25,7 @@ const Dashboard = () => {
     const [transactionToEdit, setTransactionToEdit] = useState(null);
     const [selectedAction, setSelectedAction] = useState("");
     const [userName, setUserName] = useState("");
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
     if (!group) {
         return <Navigate to="/grouppage" replace />;
@@ -35,6 +38,7 @@ const Dashboard = () => {
             const getUsers = async () => {
                 try {
                     const users = await fetchGroupUsers(group.groupId);
+                    console.log(group.groupId)
                     setGroupUsers(users);
                 } catch (error) {
                     console.error("Błąd przy pobieraniu członków grupy:", error);
@@ -155,6 +159,8 @@ const Dashboard = () => {
             }
         } else if (action === "edit") {
             console.log("Edytuję dane grupy");
+        } else if (action === "password") {
+            setIsPasswordModalOpen(true);
         }
     };
 
@@ -203,7 +209,19 @@ const Dashboard = () => {
                     <option value="leave">Opuść grupę</option>
                     <option value="delete">Usuń grupę</option>
                     <option value="edit">Zmień dane</option>
+                    <option value="password">Zmień hasło</option>
                 </select>
+
+                {isPasswordModalOpen && (
+                    <PasswordChangeModal
+                        isOpen={isPasswordModalOpen}
+                        onClose={() => setIsPasswordModalOpen(false)}
+                        onPasswordChanged={() => {
+                            setIsPasswordModalOpen(false);
+                            alert("Password successfully updated.");
+                        }}
+                    />
+                )}
 
                 <Link to="/login">
                     <button className="logout-btn">LOGOUT</button>
@@ -260,8 +278,7 @@ const Dashboard = () => {
 
             <div className="sidebar">
                 <div className="savings-goal">
-                    <div className="goal-title">Cel oszczędzania: {goal} <br /> (pozostało)</div>
-                    <div className="goal-value">11 918,06 {currency}</div>
+                    <div className="goal-title">Cel oszczędzania: <br /> {goal} </div>
                 </div>
 
                 <div className="members-list">
@@ -277,9 +294,6 @@ const Dashboard = () => {
                     <span>Kod dostępu</span>
                 </div>
 
-                <div className="calendar">
-                    <span>kalendarzyk</span>
-                </div>
             </div>
 
             {isModalOpen && (
