@@ -1,6 +1,6 @@
 -- Tworzenie bazy danych
 CREATE DATABASE IF NOT EXISTS budget_manager;
-USE budget_manager;
+
 
 DROP TABLE IF EXISTS users_groups;
 DROP TABLE IF EXISTS transactions;
@@ -14,7 +14,7 @@ CREATE TABLE users (
     name VARCHAR(45) NOT NULL,
     password VARCHAR(255) NOT NULL,
     password_salt VARCHAR(255) NOT NULL,
-    mail VARCHAR(45) UNIQUE NOT NULL
+    mail VARCHAR(45) UNIQUE NOT NULL,
     rolee VARCHAR(45) NOT NULL
 );
 
