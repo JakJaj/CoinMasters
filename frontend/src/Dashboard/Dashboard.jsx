@@ -35,7 +35,7 @@ const Dashboard = () => {
         return <Navigate to="/grouppage" replace />;
     }
 
-    const { groupName, currency, goal, groupId } = group;
+    const { groupName, currency, goal, groupId, joinCode } = group;
 
     useEffect(() => {
         if (group) {
@@ -310,7 +310,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="access-code">
-                    <span>Kod dostępu</span>
+                    <span>Kod dostępu: {joinCode} </span>
                 </div>
 
             </div>
