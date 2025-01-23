@@ -62,6 +62,7 @@ public class UserService {
                                         .groupName(group.getGroup().getGroupName())
                                         .goal(group.getGroup().getGoal())
                                         .currency(group.getGroup().getCurrency())
+                                        .joinCode(group.getGroup().getJoinCode())
                                         .build()
                                 ).collect(Collectors.toSet()))
                         .build())

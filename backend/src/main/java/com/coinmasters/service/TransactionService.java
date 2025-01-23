@@ -148,7 +148,7 @@ public class TransactionService {
         }
 
         if (request.getNewAmount() != 0.0f && request.getNewAmount() != transaction.getAmount()){
-            transaction.setName(request.getNewName());
+            transaction.setAmount(request.getNewAmount());
         }
 
         Transaction savedTransaction = transactionRepository.save(transaction);
