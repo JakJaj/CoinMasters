@@ -20,6 +20,7 @@ public class UserController {
      * @return User details that contains information about user such as id, email, name, role
      */
     @GetMapping("")
+    @CrossOrigin
     public ResponseEntity<UserDetailsResponse> getUserDetails(@RequestHeader("Authorization") String token){
         return ResponseEntity.ok(userService.getUserDetails(token));
     }
@@ -30,6 +31,7 @@ public class UserController {
      * @return Set of groups that a currently logged-in user is a part of.
      */
     @GetMapping("/groups")
+    @CrossOrigin
     public ResponseEntity<UserGroupsResponse> getGroupsOfUser(@RequestHeader("Authorization") String token){
         return ResponseEntity.ok(userService.getGroupsOfUser(token));
     }
@@ -43,6 +45,7 @@ public class UserController {
      * @return The {@link ChangePasswordResponse} schema that is presenting whether a password was changes or if something went wrong.
      */
     @PutMapping("/password")
+    @CrossOrigin
     public ResponseEntity<ChangePasswordResponse> changePassword(@RequestBody ChangePasswordRequest request, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(userService.changePassword(request, token));
     }

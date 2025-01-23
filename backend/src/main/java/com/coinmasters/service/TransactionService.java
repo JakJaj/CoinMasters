@@ -12,6 +12,7 @@ import com.coinmasters.entity.Transaction;
 import com.coinmasters.entity.User;
 import com.coinmasters.entity.UserGroup.UserGroup;
 import com.coinmasters.exceptions.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +98,7 @@ public class TransactionService {
 
     }
 
+    @Transactional
     public DeleteTransactionResponse deleteTransaction(Long transactionID, String token) {
 
         String email = jwtService.extractUsername(token.substring(7));
@@ -120,6 +122,7 @@ public class TransactionService {
 
     }
 
+    @Transactional
     public ChangeTransactionDetailsResponse changeTransactionDetails(Long transactionID, ChangeTransactionDetailsRequest request, String token) {
 
         String email = jwtService.extractUsername(token.substring(7));

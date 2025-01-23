@@ -10,4 +10,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     Optional<List<Transaction>> findTransactionsByGroup_GroupId(Long groupId);
     Optional<Transaction> findTransactionsByTransactionId(Long transactionId);
+    void deleteTransactionsByGroup_GroupId(Long groupId);
 }
