@@ -50,49 +50,48 @@ VALUES
 
 INSERT INTO transactions (name, category, amount, date, user_id, group_id)
 VALUES
-    ('Darowizna 1', 'Charytatywne', 100.00, '2023-11-01', 1, 1),
-    ('Zakup materiałów', 'Zakupy', 200.00, '2023-11-02', 2, 1),
-    ('Organizacja eventu', 'Usługi', 300.00, '2023-11-03', 3, 1),
+    ('Darowizna 1', 'Charytatywne', -100.00, '2023-11-01', 1, 1),
+    ('Zakup materiałów', 'Zakupy', -200.00, '2023-11-02', 2, 1),
+    ('Organizacja eventu', 'Usługi', -300.00, '2023-11-03', 3, 1),
     ('Transport darów', 'Transport', 150.00, '2023-11-04', 4, 1),
-    ('Druk plakatów', 'Reklama', 50.00, '2023-11-05', 5, 1),
+    ('Druk plakatów', 'Reklama', -50.00, '2023-11-05', 5, 1),
     ('Nowa darowizna', 'Charytatywne', 400.00, '2023-11-06', 1, 1),
     ('Promocja wydarzenia', 'Reklama', 120.00, '2023-11-07', 2, 1),
-    ('Wynajem sali', 'Usługi', 500.00, '2023-11-08', 3, 1),
-    ('Zakup jedzenia', 'Zakupy', 250.00, '2023-11-09', 4, 1),
-    ('Darowizna 2', 'Charytatywne', 300.00, '2023-11-10', 1, 1),
+    ('Wynajem sali', 'Usługi', -500.00, '2023-11-08', 3, 1),
+    ('Zakup jedzenia', 'Zakupy', -250.00, '2023-11-09', 4, 1),
+    ('Darowizna 2', 'Charytatywne', -300.00, '2023-11-10', 1, 1),
     ('Zakup książek', 'Edukacja', 600.00, '2023-11-11', 5, 1),
-    ('Koszty transportu', 'Transport', 100.00, '2023-11-12', 4, 1),
-    ('Druk ulotek', 'Reklama', 90.00, '2023-11-13', 3, 1);
+    ('Koszty transportu', 'Transport', -100.00, '2023-11-12', 4, 1),
+    ('Druk ulotek', 'Reklama', -90.00, '2023-11-13', 3, 1);
 
 INSERT INTO transactions (name, category, amount, date, user_id, group_id)
 VALUES
-    ('Zakup sprzętu', 'Sprzęt', 2000.00, '2023-11-01', 6, 2),
-    ('Szkolenie', 'Edukacja', 500.00, '2023-11-02', 7, 2),
-    ('Prezentacja', 'Usługi', 300.00, '2023-11-03', 8, 2),
+    ('Zakup sprzętu', 'Sprzęt', -2000.00, '2023-11-01', 6, 2),
+    ('Szkolenie', 'Edukacja', -500.00, '2023-11-02', 7, 2),
+    ('Prezentacja', 'Usługi', -300.00, '2023-11-03', 8, 2),
     ('Zakup licencji', 'Software', 800.00, '2023-11-04', 1, 2),
-    ('Promocja klubu', 'Marketing', 400.00, '2023-11-05', 2, 2),
-    ('Druk materiałów', 'Zakupy', 200.00, '2023-11-06', 6, 2),
-    ('Nowe komputery', 'Sprzęt', 5000.00, '2023-11-07', 7, 2),
+    ('Promocja klubu', 'Marketing', -400.00, '2023-11-05', 2, 2),
+    ('Druk materiałów', 'Zakupy', -200.00, '2023-11-06', 6, 2),
+    ('Nowe komputery', 'Sprzęt', -5000.00, '2023-11-07', 7, 2),
     ('Organizacja warsztatów', 'Edukacja', 1500.00, '2023-11-08', 8, 2),
-    ('Rejestracja domeny', 'Software', 100.00, '2023-11-09', 1, 2),
-    ('Hosting', 'Software', 300.00, '2023-11-10', 2, 2),
+    ('Rejestracja domeny', 'Software', -100.00, '2023-11-09', 1, 2),
+    ('Hosting', 'Software', -300.00, '2023-11-10', 2, 2),
     ('Koszty serwera', 'Software', 400.00, '2023-11-11', 6, 2),
     ('Zakup routera', 'Sprzęt', 600.00, '2023-11-12', 7, 2),
-    ('Konferencja', 'Edukacja', 800.00, '2023-11-13', 8, 2);
+    ('Konferencja', 'Edukacja', -800.00, '2023-11-13', 8, 2);
 
 INSERT INTO transactions (name, category, amount, date, user_id, group_id)
 VALUES
-    ('Rezerwacja hotelu', 'Noclegi', 3000.00, '2023-11-01', 9, 3),
+    ('Rezerwacja hotelu', 'Noclegi', -3000.00, '2023-11-01', 9, 3),
     ('Bilety lotnicze', 'Transport', 5000.00, '2023-11-02', 10, 3),
-    ('Ubezpieczenie podróżne', 'Ubezpieczenia', 400.00, '2023-11-03', 11, 3),
-    ('Zakup map', 'Zakupy', 50.00, '2023-11-04', 1, 3),
+    ('Ubezpieczenie podróżne', 'Ubezpieczenia', -400.00, '2023-11-03', 11, 3),
+    ('Zakup map', 'Zakupy', -50.00, '2023-11-04', 1, 3),
     ('Wynajem samochodu', 'Transport', 1000.00, '2023-11-05', 5, 3),
-    ('Wycieczki fakultatywne', 'Rozrywka', 800.00, '2023-11-06', 9, 3),
+    ('Wycieczki fakultatywne', 'Rozrywka', -800.00, '2023-11-06', 9, 3),
     ('Kolacja grupowa', 'Jedzenie', 300.00, '2023-11-07', 10, 3),
-    ('Pamiątki', 'Zakupy', 150.00, '2023-11-08', 11, 3),
-    ('Bilety na atrakcje', 'Rozrywka', 600.00, '2023-11-09', 1, 3),
+    ('Pamiątki', 'Zakupy', -150.00, '2023-11-08', 11, 3),
+    ('Bilety na atrakcje', 'Rozrywka', -600.00, '2023-11-09', 1, 3),
     ('Rezerwacja restauracji', 'Jedzenie', 500.00, '2023-11-10', 5, 3),
-    ('Zakup kosmetyków', 'Zakupy', 200.00, '2023-11-11', 9, 3),
-    ('Transport publiczny', 'Transport', 100.00, '2023-11-12', 10, 3),
-    ('Opłata za przewodnika', 'Usługi', 300.00, '2023-11-13', 11, 3);
-
+    ('Zakup kosmetyków', 'Zakupy', -200.00, '2023-11-11', 9, 3),
+    ('Transport publiczny', 'Transport', -100.00, '2023-11-12', 10, 3),
+    ('Opłata za przewodnika', 'Usługi', -300.00, '2023-11-13', 11, 3);
