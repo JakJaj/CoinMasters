@@ -79,6 +79,7 @@ public class GroupService {
                         .groupName(group.getGroupName())
                         .goal(group.getGoal())
                         .currency(group.getCurrency())
+                        .joinCode(group.getJoinCode())
                         .build())
                 .build();
     }
@@ -174,6 +175,7 @@ public class GroupService {
                             .groupName(savedGroup.getGroupName())
                             .goal(savedGroup.getGoal())
                             .currency(savedGroup.getCurrency())
+                            .joinCode(savedGroup.getJoinCode())
                             .build())
                     .build();
         }

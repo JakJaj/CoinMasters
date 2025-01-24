@@ -14,4 +14,5 @@ public class GroupDTO {
     private String groupName;
     private String goal;
     private String currency;
+    private String joinCode;
 }
